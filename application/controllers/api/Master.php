@@ -214,8 +214,8 @@ class Master extends CI_Controller
             $now = date("d F Y - H:i");
             $email = htmlspecialchars($user->email, true);
 
-            $subject = "Password change - Middle East Youth Summit";
-            $message = "Hi, password for Middle East Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> <br>Your new password is: <b>{$this->input->post('pass')}</b> <br><br> If you feel not requested this changes, please contact our admin immediately.";
+            $subject = "Password change - Istanbull Youth Summit";
+            $message = "Hi, password for Istanbull Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> <br>Your new password is: <b>{$this->input->post('pass')}</b> <br><br> If you feel not requested this changes, please contact our admin immediately.";
 
             // mengirimemailperubahan password
             sendMail(htmlspecialchars($user->email, true), $subject, $message);
@@ -236,14 +236,14 @@ class Master extends CI_Controller
                 $now = date("d F Y - H:i");
                 $email = htmlspecialchars($user->email, true);
 
-                $subject = "Email change - Middle East Youth Summit";
-                $message = "Hi, email for Middle East Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> <br>Your new email is: <b>{$this->input->post('email')}</b> <br><br> If you feel not requested this changes, please contact our admin immediately.";
+                $subject = "Email change - Istanbull Youth Summit";
+                $message = "Hi, email for Istanbull Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> <br>Your new email is: <b>{$this->input->post('email')}</b> <br><br> If you feel not requested this changes, please contact our admin immediately.";
 
                 // mengirimemailperubahan email
                 sendMail(htmlspecialchars($user->email, true), $subject, $message);
 
-                $subject = "Email change - Middle East Youth Summit";
-                $message = "Hi, email for Middle East Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> <br>Your new email is: <b>{$this->input->post('email')}</b> <br><br> If you feel not requested this changes, please contact our admin immediately.";
+                $subject = "Email change - Istanbull Youth Summit";
+                $message = "Hi, email for Istanbull Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> <br>Your new email is: <b>{$this->input->post('email')}</b> <br><br> If you feel not requested this changes, please contact our admin immediately.";
 
                 // mengirimemailperubahan email
                 sendMail(htmlspecialchars($this->input->post('email'), true), $subject, $message);

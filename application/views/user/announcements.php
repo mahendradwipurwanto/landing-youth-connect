@@ -64,7 +64,7 @@
 				</div>
 
 				<h1 class="h2">No announcements yet.</h1>
-				<p> Stay tuned for announcements at the Middle East Youth Summit. Immediately complete your
+				<p> Stay tuned for announcements at the Istanbull Youth Summit. Immediately complete your
 					personal data!</p>
 			</div>
 			<?php endif;?>

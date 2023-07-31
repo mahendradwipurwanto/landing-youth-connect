@@ -3,8 +3,8 @@
 	<div class="row justify-content-lg-between align-items-md-center">
 		<div class="col-md-5 mb-7 mb-md-0">
 			<div class="mb-5">
-				<h2>Ambassador Middle East Youth Summit</h2>
-				<p>Access your ambassador account to see statistic about your campaign on Middle East Youth Summit.</p>
+				<h2>Ambassador Istanbull Youth Summit</h2>
+				<p>Access your ambassador account to see statistic about your campaign on Istanbull Youth Summit.</p>
 			</div>
 
 			<!-- <h4>Learn more about:</h4> -->

@@ -78,7 +78,7 @@
 		introJs().setOptions({
 			disableInteraction: true,
 			steps: [{
-				intro: "Welcome to Middle East Youth Summit webApp, we will briefly explain our feature`s"
+				intro: "Welcome to Istanbull Youth Summit webApp, we will briefly explain our feature`s"
 			}, {
 				element: document.querySelector('#tour-landing-button'),
 				intro: "Go to landing page with ease"

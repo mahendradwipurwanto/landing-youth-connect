@@ -173,7 +173,7 @@
 						<label for="inputSubject" class="form-label">Question <small
 								class="text-danger">*</small></label>
 						<div class="tom-select-custom">
-							<select class="js-select form-select form-select-sm" autocomplete="off" name="m_faq_id"
+							<select class="js-select form-select form-select-sm" autocomplete="off" name="m_programs_faq_categories_id"
 								data-hs-tom-select-options='{"placeholder": "Select a person..."}'>
 								<?php if(!empty($master_faq)):?>
 								<?php foreach($master_faq as $key => $val):?>

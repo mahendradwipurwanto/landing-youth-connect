@@ -10,8 +10,8 @@ class M_home extends CI_Model
 
     function getFaqAll(){
         $this->db->select('id, title, order, created_at')
-        ->from('m_faq')
-        ->where(['is_deleted' => 0])
+        ->from('m_programs_faq_categories')
+        ->where(['deleted_at' => null])
         ->order_by('order asc');
         ;
 
@@ -30,10 +30,10 @@ class M_home extends CI_Model
         return $models;
     }
 
-    function getFaqLists($m_faq_id = null){
+    function getFaqLists($m_programs_faq_categories_id = null){
         $this->db->select('id, faq, content, order, created_at')
-        ->from('tb_faq')
-        ->where(['m_faq_id' => $m_faq_id, 'is_deleted' => 0])
+        ->from('m_programs_faq')
+        ->where(['m_programs_faq_categories_id' => $m_programs_faq_categories_id, 'deleted_at' => null])
         ->order_by('order ASC')
         ;
 
@@ -46,7 +46,7 @@ class M_home extends CI_Model
     function getHomeSwiper(){
         $this->db->select('*')
         ->from('tb_swiper')
-        ->where(['page_code' => 'home', 'is_deleted' => 0])
+        ->where(['page_code' => 'home', 'deleted_at' => null])
         ->order_by('order ASC')
         ;
 
@@ -58,7 +58,7 @@ class M_home extends CI_Model
     function getHomeComponents($key){
         $this->db->select('*')
         ->from('m_home')
-        ->where(['is_deleted' => 0, 'key' => $key])
+        ->where(['deleted_at' => null, 'key' => $key])
         ;
 
         return $this->db->get()->row()->value;

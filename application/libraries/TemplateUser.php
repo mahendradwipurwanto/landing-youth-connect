@@ -23,13 +23,13 @@ class TemplateUser
 
     // public function countAnnouncements()
     // {
-    //     $query = $this->_ci->db->get_where('tb_announcements', ['is_member' => 1 , 'is_deleted' => 0]);
+    //     $query = $this->_ci->db->get_where('m_programs_announcements', ['is_member' => 1 , 'deleted_at' => null]);
     //     return $query->num_rows();
     // }
 
     public function countDocuments()
     {
-        $query = $this->_ci->db->get_where('m_programs_documents', ['is_deleted' => 0]);
+        $query = $this->_ci->db->get_where('m_programs_documents', ['deleted_at' => null]);
         return $query->num_rows();
     }
 
@@ -39,7 +39,7 @@ class TemplateUser
         ->join('access_user b', 'a.user_id = b.user_id')
         ->join('access_auth c', 'a.user_id = c.user_id')
         // ->join('tb_ambassador d', 'a.referral_code = d.referral_code', 'left')
-        ->where(['a.is_deleted' => 0, 'c.status' => 1, 'a.user_id' => $user_id])
+        ->where(['a.deleted_at' => null, 'c.status' => 1, 'a.user_id' => $user_id])
         ;
 
         $models = $this->_ci->db->get()->row();
@@ -55,7 +55,7 @@ class TemplateUser
         $data['web_desc'] = $web_data->description;
         $data['web_icon'] = $web_data->icon;
         $data['web_logo'] = $web_data->logo;
-        $data['web_logo_white'] = $web_data->logo;
+        $data['web_logo_white'] = $web_data->logo_white;
         $data['web_alamat'] = $web_data->address;
         $data['web_telepon'] = $web_data->phone;
         $data['web_email'] = $web_data->email;

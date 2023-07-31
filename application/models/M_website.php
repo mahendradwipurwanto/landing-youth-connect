@@ -110,7 +110,7 @@ class M_website extends CI_Model
         $password = $this->input->post('admin');
         
         $this->db->where('role', 1);
-        $this->db->update('tb_auth', ['email' => $email, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
+        $this->db->update('access_auth', ['email' => $email, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
 
         return true;
     }

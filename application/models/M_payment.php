@@ -11,7 +11,7 @@ class M_payment extends CI_Model
 
     public function getMidtransConfig($key = null)
     {
-        $models = $this->db->get_where('m_midtrans_config', ['is_deleted' => 0, 'key' => $key])->row();
+        $models = $this->db->get_where('m_midtrans_config', ['deleted_at' => null, 'key' => $key])->row();
 
         if (!empty($models)) {
             return $models->value;
@@ -22,12 +22,12 @@ class M_payment extends CI_Model
 
     public function getPaymentSettings()
     {
-        return $this->db->get_where('m_payments_settings', ['is_deleted' => 0, 'type_method' => 'manual'])->result();
+        return $this->db->get_where('m_payments_settings', ['deleted_at' => null, 'type_method' => 'manual'])->result();
     }
 
     public function getPaymentSettingsUser()
     {
-        $models = $this->db->get_where('m_payments_settings', ['active' => 1, 'is_deleted' => 0, 'type_method' => 'manual'])->result();
+        $models = $this->db->get_where('m_payments_settings', ['active' => 1, 'deleted_at' => null, 'type_method' => 'manual'])->result();
 
         foreach ($models as $key => $val) {
             $models[$key]->data = json_decode($val->data);
@@ -38,7 +38,7 @@ class M_payment extends CI_Model
 
     public function getDetailPaymentSetting($id = null)
     {
-        return $this->db->get_where('m_payments_settings', ['is_deleted' => 0, 'id' => $id])->row();
+        return $this->db->get_where('m_payments_settings', ['deleted_at' => null, 'id' => $id])->row();
     }
 
     public function getUserPaymentBatch()
@@ -46,7 +46,7 @@ class M_payment extends CI_Model
         $now = time();
         $this->db->select('*')
         ->from('m_payments_batch')
-        ->where(['is_deleted' => 0])
+        ->where(['deleted_at' => null])
         ->where("$now BETWEEN start_date AND end_date")
         ->where(['active' => 1])
         ;
@@ -73,7 +73,7 @@ class M_payment extends CI_Model
         $now = time();
         $this->db->select('*')
         ->from('m_payments_batch')
-        ->where(['is_deleted' => 0])
+        ->where(['deleted_at' => null])
         // ->where("$now BETWEEN start_date AND end_date")
         ->where(['active' => 1])
         // ->or_where(['is_registration' => 1])
@@ -124,7 +124,7 @@ class M_payment extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
         ->join('m_payments_settings c', 'a.payment_setting = c.id')
-        ->where(['a.user_id' => $this->session->userdata('user_id'), 'a.status !=' => 3, 'a.payment_batch' => $batch_id, 'a.is_deleted' => 0])
+        ->where(['a.user_id' => $this->session->userdata('user_id'), 'a.status !=' => 3, 'a.payment_batch' => $batch_id, 'a.deleted_at' => null])
         ;
 
         $models = $this->db->get()->row();
@@ -148,7 +148,7 @@ class M_payment extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
         ->join('m_payments_settings c', 'a.payment_setting = c.id')
-        ->where(['a.user_id' => $this->session->userdata('user_id'), 'a.status' => 2, 'a.payment_batch' => $batch_id, 'a.is_deleted' => 0])
+        ->where(['a.user_id' => $this->session->userdata('user_id'), 'a.status' => 2, 'a.payment_batch' => $batch_id, 'a.deleted_at' => null])
         ;
 
         $models = $this->db->get()->row();
@@ -172,7 +172,7 @@ class M_payment extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
         ->join('m_payments_settings c', 'a.payment_setting = c.id')
-        ->where(['a.id' => $payment_id, 'a.is_deleted' => 0])
+        ->where(['a.id' => $payment_id, 'a.deleted_at' => null])
         ;
 
         $models = $this->db->get()->row();
@@ -188,8 +188,8 @@ class M_payment extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
         ->join('m_payments_settings c', 'a.payment_setting = c.id')
-        ->join('tb_user d', 'a.user_id = d.user_id')
-        ->where(['a.order_id' => $order_id, 'a.is_deleted' => 0])
+        ->join('access_user d', 'a.user_id = d.user_id')
+        ->where(['a.order_id' => $order_id, 'a.deleted_at' => null])
         ;
 
         $models = $this->db->get();
@@ -211,8 +211,8 @@ class M_payment extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
         ->join('m_payments_settings c', 'a.payment_setting = c.id')
-        ->join('tb_user d', 'a.user_id = d.user_id')
-        ->where(['a.user_id' => $user_id, 'a.payment_batch >' => 0, 'a.payment_setting >' => 0, 'a.is_deleted' => 0])
+        ->join('access_user d', 'a.user_id = d.user_id')
+        ->where(['a.user_id' => $user_id, 'a.payment_batch >' => 0, 'a.payment_setting >' => 0, 'a.deleted_at' => null])
         ;
         
         if(!is_null($batch_id)){
@@ -230,8 +230,8 @@ class M_payment extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
         ->join('m_payments_settings c', 'a.payment_setting = c.id')
-        ->join('tb_user d', 'a.user_id = d.user_id')
-        ->where(['a.user_id' => $user_id, 'a.is_deleted' => 0])
+        ->join('access_user d', 'a.user_id = d.user_id')
+        ->where(['a.user_id' => $user_id, 'a.deleted_at' => null])
         ;
         
         if(!is_null($batch_id)){
@@ -359,9 +359,9 @@ class M_payment extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id', 'inner')
         ->join('m_payments_settings c', 'a.payment_setting = c.id', 'inner')
-        ->join('tb_auth d', 'a.user_id = d.user_id', 'inner')
-        ->join('tb_user e', 'a.user_id = e.user_id', 'inner')
-        ->where(['a.is_deleted' => 0])
+        ->join('access_auth d', 'a.user_id = d.user_id', 'inner')
+        ->join('access_user e', 'a.user_id = e.user_id', 'inner')
+        ->where(['a.deleted_at' => null])
         //->where("a.status = 2 or a.status = 1 and a.is_deleted = 0")
         ;
 

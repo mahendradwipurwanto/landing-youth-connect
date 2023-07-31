@@ -11,7 +11,7 @@ class M_user extends CI_Model
     public function changePassword($password)
     {
         $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->update('tb_auth', ['password' => password_hash($password, PASSWORD_DEFAULT)]);
+        $this->db->update('access_auth', ['password' => password_hash($password, PASSWORD_DEFAULT)]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -22,11 +22,11 @@ class M_user extends CI_Model
     function getUserParticipans($user_id){
         $this->db->select('a.*, b.*, c.email, d.fullname, e.en_short_name')
         ->from('tb_participants a')
-        ->join('tb_user b', 'a.user_id = b.user_id')
-        ->join('tb_auth c', 'a.user_id = c.user_id')
+        ->join('access_user b', 'a.user_id = b.user_id')
+        ->join('access_auth c', 'a.user_id = c.user_id')
         ->join('tb_ambassador d', 'a.referral_code = d.referral_code', 'left')
         ->join('m_countries e', 'a.nationality = e.num_code', 'left')
-        ->where(['a.is_deleted' => 0, 'c.status' => 1, 'a.user_id' => $user_id])
+        ->where(['a.deleted_at' => null, 'c.status' => 1, 'a.user_id' => $user_id])
         ;
 
         $models = $this->db->get()->row();
@@ -48,8 +48,8 @@ class M_user extends CI_Model
     public function get_userByID($user_id)
     {
         $this->db->select('*');
-        $this->db->from('tb_auth a');
-        $this->db->join('tb_user b', 'a.user_id = b.user_id', 'left');
+        $this->db->from('access_auth a');
+        $this->db->join('access_user b', 'a.user_id = b.user_id', 'left');
         $this->db->where('a.user_id', $user_id);
         $query = $this->db->get();
 
@@ -62,15 +62,15 @@ class M_user extends CI_Model
     }
 
     function getAmbasadorByReferral($referral_code = null){
-        return $this->db->get_where('tb_ambassador', ['referral_code' => $referral_code, 'status' => 1, 'is_deleted' => 0])->row();
+        return $this->db->get_where('tb_ambassador', ['referral_code' => $referral_code, 'status' => 1, 'deleted_at' => null])->row();
     }
 
     function getUserParticipansEssay($user_id, $participans_id){
         $this->db->select('a.*, b.*, c.*')
         ->from('tb_participants_essay a')
-        ->join('tb_user b', 'a.user_id = b.user_id')
-        ->join('tb_auth c', 'a.user_id = c.user_id')
-        ->where(['a.is_deleted' => 0, 'a.participans_id' => $participans_id, 'a.user_id' => $user_id])
+        ->join('access_user b', 'a.user_id = b.user_id')
+        ->join('access_auth c', 'a.user_id = c.user_id')
+        ->where(['a.deleted_at' => null, 'a.participans_id' => $participans_id, 'a.user_id' => $user_id])
         ;
 
         $models = $this->db->get()->result();
@@ -123,7 +123,7 @@ class M_user extends CI_Model
         ];
 
         $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->update('tb_user', $userData);
+        $this->db->update('access_user', $userData);
 
         if(empty($participans)){
             $this->db->insert('tb_participants', $formData);
@@ -361,7 +361,7 @@ class M_user extends CI_Model
     function getUserDocuments(){
         $this->db->select('*')
         ->from('m_documents')
-        ->where(['is_deleted' => 0])
+        ->where(['deleted_at' => null])
         ;
 
         $models = $this->db->get()->result();
@@ -403,6 +403,6 @@ class M_user extends CI_Model
     }
 
     function getUserDocumentLoa($user_id = null){
-        return $this->db->get_where('tb_user_documents', ['user_id' => $user_id, 'm_document_id' => 4])->row();
+        return $this->db->get_where('access_user_documents', ['user_id' => $user_id, 'm_document_id' => 4])->row();
     }
 }

@@ -1253,7 +1253,7 @@
 										<span class="form-text"><b>Note:</b> As mentioned in the Registration
 											Guidelines, you need to do the followings:
 											<ul>
-												<li>Follow Middle East Youth Summit and Youth Break the Boundaries
+												<li>Follow Istanbull Youth Summit and Youth Break the Boundaries
 													Instagram & TikTok
 													<ul>
 														<li><b>Instagram YBB: </b><a href="https://www.instagram.com/youthbreaktheboundaries" target="_blank" rel="noopener noreferrer">https://www.instagram.com/youthbreaktheboundaries</a></li>
@@ -1262,7 +1262,7 @@
 														<li><b>Tiktok MEYS: </b><a href="https://www.tiktok.com/@middleeastyouthsummit" target="_blank" rel="noopener noreferrer">https://www.tiktok.com/@middleeastyouthsummit</a></li>
 													</ul>
 												</li>
-												<li>Join Middle East Youth Summit and Youth Break the Boundaries
+												<li>Join Istanbull Youth Summit and Youth Break the Boundaries
 													Telegram channel
 													<ul>
 														<li><b>Telegram YBB: </b><a href="http://t.me/youthbreaktheboundaries" target="_blank" rel="noopener noreferrer">http://t.me/youthbreaktheboundaries</a></li>
@@ -1272,7 +1272,7 @@
 												<li>Subscribe YouTube channel YBB</li>
 												<li>Tag 5 of your friends & @middleeastyouthsummit on your twibbon
 													Instagram / social media post.</li>
-												<li>Share the program information of the Middle East Youth Summit to
+												<li>Share the program information of the Istanbull Youth Summit to
 													3
 													WhatsApp Groups</li>
 											</ul>

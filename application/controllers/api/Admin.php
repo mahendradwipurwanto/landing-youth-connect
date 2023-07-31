@@ -22,8 +22,8 @@ class Admin extends CI_Controller
         if ($this->M_admin->activatedParticipant() == true) {
             $user = $this->M_auth->get_userByID($this->input->post("id"));
             // mengirimkan email selamat bergabung
-            $subject = "Welcome to Middle East Youth Summit";
-            $message = "Hi {$user->name}, Your email has been verified directly by our TEAM. Welcome to Middle East Youth Summit !";
+            $subject = "Welcome to Istanbull Youth Summit";
+            $message = "Hi {$user->name}, Your email has been verified directly by our TEAM. Welcome to Istanbull Youth Summit !";
 
             // sendMail($user->email, $subject, $message);
 

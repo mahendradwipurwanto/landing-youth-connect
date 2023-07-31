@@ -240,7 +240,7 @@
 
 					<div class="flex-grow-1 ms-3">
 						<h4>MEYS Agenda</h4>
-						<p style="text-align: justify;">This Middle East Youth Summit (MEYS) activity will be held on 19
+						<p style="text-align: justify;">This Istanbull Youth Summit (MEYS) activity will be held on 19
 							- 22
 							September 2023.</p>
 					</div>
@@ -316,7 +316,7 @@
 					<span class="step-icon step-icon-soft-light">6</span>
 					<div class="step-content">
 						<h4 class="text-white">Septemmber 19-22, 2023</h4>
-						<p class="step-text text-white-70">Middle East Youth Summit program</p>
+						<p class="step-text text-white-70">Istanbull Youth Summit program</p>
 					</div>
 				</div>
 			</li>

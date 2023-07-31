@@ -252,8 +252,8 @@ class User extends CI_Controller
                     $now = date("d F Y - H:i");
                     $email = htmlspecialchars($this->session->userdata("email"), true);
 
-                    $subject = "Password change - Middle East Youth Summit";
-                    $message = "Hi, password for Middle East Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> If you feel you did not make these changes, please contact our admin immediately.";
+                    $subject = "Password change - Istanbull Youth Summit";
+                    $message = "Hi, password for Istanbull Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> If you feel you did not make these changes, please contact our admin immediately.";
 
                     // mengirimemailperubahan password
                     sendMail(htmlspecialchars($this->session->userdata("email"), true), $subject, $message);

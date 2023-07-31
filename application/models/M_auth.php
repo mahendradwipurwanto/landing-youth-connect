@@ -10,7 +10,7 @@ class M_auth extends CI_Model
 
     function setLogTime($user_id){
         $this->db->where('user_id', $user_id);
-        $this->db->update('tb_auth', ['log_time' => time(), 'device' => $this->agent->agent_string()]);
+        $this->db->update('access_auth', ['log_time' => time(), 'device_id' => $this->agent->agent_string()]);
     }
 
     public function getSetting($key){
@@ -26,8 +26,8 @@ class M_auth extends CI_Model
     public function get_auth($email)
     {
         $this->db->select('*');
-        $this->db->from('tb_auth a');
-        $this->db->join('tb_user b', 'a.user_id = b.user_id');
+        $this->db->from('access_auth a');
+        $this->db->join('access_user b', 'a.user_id = b.user_id');
         $this->db->where('a.email', $email);
         $query = $this->db->get();
 
@@ -41,7 +41,7 @@ class M_auth extends CI_Model
 
     public function cek_auth($email)
     {
-        $query = $this->db->get_where('tb_auth', ['email' => $email]);
+        $query = $this->db->get_where('access_auth', ['email' => $email]);
 
         if ($query->num_rows() > 0) {
             return true;
@@ -53,8 +53,8 @@ class M_auth extends CI_Model
     public function get_userByID($user_id)
     {
         $this->db->select('*');
-        $this->db->from('tb_auth a');
-        $this->db->join('tb_user b', 'a.user_id = b.user_id', 'left');
+        $this->db->from('access_auth a');
+        $this->db->join('access_user b', 'a.user_id = b.user_id', 'left');
         $this->db->where('a.user_id', $user_id);
         $query = $this->db->get();
 
@@ -69,7 +69,7 @@ class M_auth extends CI_Model
     public function cek_userId($user_id)
     {
         $user_id = $this->db->escape($user_id);
-        $query = $this->db->query("SELECT * FROM tb_auth WHERE user_id = $user_id");
+        $query = $this->db->query("SELECT * FROM access_auth WHERE user_id = $user_id");
         return $query->num_rows();
     }
 
@@ -112,7 +112,7 @@ class M_auth extends CI_Model
             'created_at' => time(),
         ];
 
-        $this->db->insert('tb_auth', $auth);
+        $this->db->insert('access_auth', $auth);
 
         if ($this->db->affected_rows() == true) {
 
@@ -122,7 +122,7 @@ class M_auth extends CI_Model
                 'phone' => $phone
             ];
 
-            $this->db->insert('tb_user', $user);
+            $this->db->insert('access_user', $user);
 
             if ($this->db->affected_rows() == true) {
 
@@ -131,12 +131,12 @@ class M_auth extends CI_Model
                 $aktivasi = [
                     'user_id' => $user_id,
                     'key' => $chiper,
-                    'type' => 1, #VERIFIKASI email / AKTIVASI AKUN 
+                    'type_id' => 1, #VERIFIKASI email / AKTIVASI AKUN 
                     'status' => 1, #change to 1 -> auto verif
                     'date_created' => time()
                 ];
 
-                $this->db->insert('tb_token', $aktivasi);
+                $this->db->insert('access_token', $aktivasi);
                 return ($this->db->affected_rows() != 1) ? false : true;
             } else {
                 $this->del_token($user_id, 1); #VERIFIKASI email / AKTIVASI AKUN 
@@ -154,7 +154,7 @@ class M_auth extends CI_Model
     public function cek_aktivasi($user_id)
     {
         $user_id = $this->db->escape($user_id);
-        $query = $this->db->query("SELECT * FROM tb_token WHERE user_id = $user_id AND type = 1");
+        $query = $this->db->query("SELECT * FROM access_token WHERE user_id = $user_id AND type_id = 1");
         return $query->num_rows();
     }
 
@@ -175,7 +175,7 @@ class M_auth extends CI_Model
     public function get_aktivasi($user_id)
     {
         $user_id = $this->db->escape($user_id);
-        $query = $this->db->query("SELECT * FROM tb_token WHERE user_id = $user_id AND type = 1");
+        $query = $this->db->query("SELECT * FROM access_auth WHERE user_id = $user_id AND status = 1");
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
@@ -198,11 +198,11 @@ class M_auth extends CI_Model
     public function aktivasi_akun($user_id)
     {
 
-        $this->db->where(['user_id' => $user_id, 'type' => 1]);
-        $this->db->update('tb_token', ['status' => 1]);
+        $this->db->where(['user_id' => $user_id, 'type_id' => 1]);
+        $this->db->update('access_token', ['status' => 1]);
 
         $this->db->where('user_id', $user_id);
-        $this->db->update('tb_auth', ['active' => 1]);
+        $this->db->update('access_auth', ['active' => 1]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -211,7 +211,7 @@ class M_auth extends CI_Model
     public function cek_tokenRecovery($token)
     {
         $token = $this->db->escape($token);
-        $query = $this->db->query("SELECT * FROM tb_token a WHERE a.key = $token AND a.type = 2");
+        $query = $this->db->query("SELECT * FROM access_token a WHERE a.key = $token AND a.type_id = 2");
 
         if ($query->num_rows() > 0) {
             return true;
@@ -223,7 +223,7 @@ class M_auth extends CI_Model
     public function get_tokenRecovery($token)
     {
         $token = $this->db->escape($token);
-        $query = $this->db->query("SELECT * FROM tb_token a WHERE a.key = $token AND a.type = 2");
+        $query = $this->db->query("SELECT * FROM access_token a WHERE a.key = $token AND a.type_id = 2");
 
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -234,7 +234,7 @@ class M_auth extends CI_Model
 
     public function insert_token($data)
     {
-        $this->db->insert('tb_token', $data);
+        $this->db->insert('access_token', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -244,7 +244,7 @@ class M_auth extends CI_Model
         $email = htmlspecialchars($this->input->post("email"), true);
 
         $this->db->where(['user_id' => $user_id, 'email' => $email]);
-        $this->db->update('tb_auth', ['password' => password_hash($password, PASSWORD_DEFAULT)]);
+        $this->db->update('access_auth', ['password' => password_hash($password, PASSWORD_DEFAULT)]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -253,28 +253,28 @@ class M_auth extends CI_Model
 
     public function del_token($user_id, $type)
     {
-        $this->db->where(['user_id' => $user_id, 'type' => $type]);
-        $this->db->delete('tb_token');
+        $this->db->where(['user_id' => $user_id, 'type_id' => $type]);
+        $this->db->delete('access_token');
     }
 
     public function del_user($user_id)
     {
         $user_id = $this->db->escape($user_id);
         $this->db->where('user_id', $user_id);
-        $this->db->delete('tb_auth');
+        $this->db->delete('access_auth');
     }
 
     public function makeOnline($user_id = null){
         $this->db->where('user_id', $user_id);
-        $this->db->update('tb_auth', ['online' => 1]);
+        $this->db->update('access_auth', ['online' => 1]);
     }
 
     public function makeOffline($user_id = null){
         $this->db->where('user_id', $user_id);
-        $this->db->update('tb_auth', ['online' => 0]);
+        $this->db->update('access_auth', ['online' => 0]);
     }
 
     public function getUsersOnline(){
-        return $this->db->get_where('tb_auth', ['is_deleted' => 0, 'online' => 1])->result();
+        return $this->db->get_where('access_auth', ['status !=' => 2, 'online' => 1])->result();
     }
 }

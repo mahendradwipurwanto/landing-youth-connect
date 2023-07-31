@@ -124,7 +124,7 @@ class User extends CI_Controller
     public function ajxPostSubmission(){
         if($this->M_user->ajxPostSubmission() == true){
 
-            $subject = "Submission submitted - Middle East Youth Summit";
+            $subject = "Submission submitted - Istanbull Youth Summit";
             $message = "Hi, your submission has been submitted to our system. You will receive further notice regarding your submission, or contact us if you had any question";
 
             // mengirimemail

@@ -12,8 +12,10 @@
 
 .navbar-brand-logo {
 	width: 100%;
-	min-width: 9rem;
-	max-width: 9rem
+	min-width: 7rem;
+	max-width: 7rem;
+    position: fixed;
+    top: 0;
 }
 
 .hs-position-right {

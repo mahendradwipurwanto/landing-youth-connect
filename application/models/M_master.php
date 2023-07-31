@@ -35,9 +35,9 @@ class M_master extends CI_Model
     function get_masterFaqContent()
     {
         $this->db->select('a.*, b.name')
-        ->from('m_faq a')
-        ->join('tb_user b', 'a.created_by = b.user_id', 'left')
-        ->where(['a.is_deleted' => 0])
+        ->from('m_programs_faq_categories a')
+        ->join('access_user b', 'a.created_by = b.user_id', 'left')
+        ->where(['a.deleted_at' => null])
         ;
 
         $models = $this->db->get()->result();
@@ -53,12 +53,12 @@ class M_master extends CI_Model
 
         $data = [
             'title' => $title,
-            'order' => $this->db->get_where('m_faq', ['is_deleted' => 0])->num_rows(),
+            'order' => $this->db->get_where('m_programs_faq_categories', ['deleted_at' => null])->num_rows(),
             'created_at' => time(),
             'created_by' => $this->session->userdata('user_id')
         ];
 
-        $this->db->insert('m_faq', $data);
+        $this->db->insert('m_programs_faq_categories', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -74,7 +74,7 @@ class M_master extends CI_Model
         ];
 
         $this->db->where('id', $id);
-        $this->db->update('m_faq', $data);
+        $this->db->update('m_programs_faq_categories', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -83,26 +83,26 @@ class M_master extends CI_Model
         $id = $this->input->post('id');
 
         $this->db->where('id', $id);
-        $this->db->update('m_faq', ['is_deleted' => 1]);
+        $this->db->update('m_programs_faq_categories', ['is_deleted' => 1]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
     public function addFaq()
     {
         $faq = $this->input->post('faq');
-        $m_faq_id = $this->input->post('m_faq_id');
+        $m_programs_faq_categories_id = $this->input->post('m_programs_faq_categories_id');
         $answer = $this->input->post('answer');
 
         $data = [
             'faq' => $faq,
-            'm_faq_id' => $m_faq_id,
+            'm_programs_faq_categories_id' => $m_programs_faq_categories_id,
             'content' => $answer,
-            'order' => $this->db->get_where('tb_faq', ['m_faq_id' => $m_faq_id, 'is_deleted' => 0])->num_rows(),
+            'order' => $this->db->get_where('m_programs_faq', ['m_programs_faq_categories_id' => $m_programs_faq_categories_id, 'deleted_at' => null])->num_rows(),
             'created_at' => time(),
             'created_by' => $this->session->userdata('user_id')
         ];
 
-        $this->db->insert('tb_faq', $data);
+        $this->db->insert('m_programs_faq', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -120,7 +120,7 @@ class M_master extends CI_Model
         ];
 
         $this->db->where('id', $id);
-        $this->db->update('tb_faq', $data);
+        $this->db->update('m_programs_faq', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -129,14 +129,14 @@ class M_master extends CI_Model
         $id = $this->input->post('id');
 
         $this->db->where('id', $id);
-        $this->db->update('tb_faq', ['is_deleted' => 1]);
+        $this->db->update('m_programs_faq', ['is_deleted' => 1]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
     function get_paymentsBatch(){
         $this->db->select('*')
         ->from('m_payments_batch')
-        ->where(['is_deleted' => 0])
+        ->where(['deleted_at' => null])
         ;
 
         $models = $this->db->get()->result();
@@ -224,7 +224,7 @@ class M_master extends CI_Model
         $password = $this->input->post('pass');
 
         $this->db->where(['user_id' => $user_id]);
-        $this->db->update('tb_auth', ['password' => password_hash($password, PASSWORD_DEFAULT)]);
+        $this->db->update('access_auth', ['password' => password_hash($password, PASSWORD_DEFAULT)]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -233,14 +233,14 @@ class M_master extends CI_Model
         $email = $this->input->post('email');
 
         $this->db->where(['user_id' => $user_id]);
-        $this->db->update('tb_auth', ['email' => $email]);
+        $this->db->update('access_auth', ['email' => $email]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
     function getDocuments(){
         $this->db->select('*')
         ->from('m_documents')
-        ->where(['is_deleted' => 0])
+        ->where(['deleted_at' => null])
         ;
 
         $models = $this->db->get()->result();
@@ -251,7 +251,7 @@ class M_master extends CI_Model
     function getParticipansEssay(){
         $this->db->select('a.*')
         ->from('m_essay a')
-        ->where(['a.is_deleted' => 0])
+        ->where(['a.deleted_at' => null])
         ;
 
         $models = $this->db->get()->result();
@@ -260,11 +260,11 @@ class M_master extends CI_Model
     }
 
     function getAmbasadorByReferral($referral_code = null){
-        return $this->db->get_where('tb_ambassador', ['referral_code' => $referral_code, 'status' => 1, 'is_deleted' => 0])->row();
+        return $this->db->get_where('tb_ambassador', ['referral_code' => $referral_code, 'status' => 1, 'deleted_at' => null])->row();
     }
 
     function getAllAmbassador(){
-        $models = $this->db->get_where('tb_ambassador', ['is_deleted' => 0])->result();
+        $models = $this->db->get_where('tb_ambassador', ['deleted_at' => null])->result();
 
         foreach($models as $key => $val){
             $val->affiliate = $this->countAffiliateAmbassador($val->referral_code);
@@ -278,7 +278,7 @@ class M_master extends CI_Model
     }
 
     function countAffiliateAmbassador($referral_code){
-        return $this->db->get_where('tb_participants', ['referral_code' => $referral_code, 'is_deleted' => 0])->num_rows();
+        return $this->db->get_where('tb_participants', ['referral_code' => $referral_code, 'deleted_at' => null])->num_rows();
     }
 
     public function addAmbassador($poster = null)
@@ -374,7 +374,7 @@ class M_master extends CI_Model
     }
 
     function get_masterEligilibity(){
-        return $this->db->get_where('m_eligilibity_countries', ['is_deleted' => 0])->result();
+        return $this->db->get_where('m_eligibility_countries', ['deleted_at' => null])->result();
     }
 
     public function addEligilibity()
@@ -393,7 +393,7 @@ class M_master extends CI_Model
             'created_at' => time()
         ];
 
-        $this->db->insert('m_eligilibity_countries', $data);
+        $this->db->insert('m_eligibility_countries', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -416,7 +416,7 @@ class M_master extends CI_Model
 
 
         $this->db->where('id', $id);
-        $this->db->update('m_eligilibity_countries', $data);
+        $this->db->update('m_eligibility_countries', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -425,7 +425,7 @@ class M_master extends CI_Model
         $id = $this->input->post('id');
 
         $this->db->where('id', $id);
-        $this->db->update('m_eligilibity_countries', ['is_deleted' => 1]);
+        $this->db->update('m_eligibility_countries', ['is_deleted' => 1]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 }

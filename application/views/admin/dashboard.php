@@ -2,7 +2,7 @@
     		<div class="col-md-7 col-xl-6">
     			<div class="mb-4">
     				<h1 class="display-5 mb-3"><span class="h3">Welcome to the </span><br><span
-    						class="text-warning text-highlight-info">Middle East Youth Summit</span><br><span
+    						class="text-warning text-highlight-info">Istanbull Youth Summit</span><br><span
     						class="display-6">system</span></h1>
     				<p class="lead">Manage your program from sharing information to making reports with ease in
     					one platform.</p>

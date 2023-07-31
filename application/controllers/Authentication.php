@@ -1,4 +1,7 @@
 <?php
+
+use GuzzleHttp\Exception\RequestException;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Authentication extends CI_Controller
@@ -10,6 +13,7 @@ class Authentication extends CI_Controller
     {
         parent::__construct();
         $this->load->model(['M_auth', 'M_master']);
+        $this->load->library('apirequests');
 
         $this->_master_password = $this->M_auth->getSetting('master_password') != false ? $this->M_auth->getSetting('master_password') : 'SU_MHND19';
     }
@@ -27,7 +31,7 @@ class Authentication extends CI_Controller
             redirect(base_url());
         } else {
 
-            if($this->input->get('reff')){
+            if ($this->input->get('reff')) {
                 $this->session->set_userdata('redirect', $this->input->get('reff'));
             }
 
@@ -53,21 +57,21 @@ class Authentication extends CI_Controller
             $referral_code = null;
             $ambassador = null;
 
-            if($this->input->get('affiliate_code')){
+            if ($this->input->get('affiliate_code')) {
                 $this->session->unset_userdata('referral_code');
-                
+
                 $referral_code = $this->input->get('affiliate_code');
                 $ambassador = $this->M_master->getAmbasadorByReferral($referral_code);
 
                 $this->session->set_userdata(['referral_code' => $referral_code]);
-            }elseif($this->session->has_userdata('referral_code')){
+            } elseif ($this->session->has_userdata('referral_code')) {
                 $referral_code = $this->session->userdata('referral_code');
                 $ambassador = $this->M_master->getAmbasadorByReferral($referral_code);
             }
-            
+
             $data['referral_code'] = $referral_code;
             $data['referral'] = $ambassador;
-            
+
             // ej($data);
             $this->templateauth->view('authentication/register', $data);
         }
@@ -106,7 +110,7 @@ class Authentication extends CI_Controller
 
                     // cek apakah mengirim permintaan pengiriman email verifikasi
                     if ($this->input->get('act') == "send-email") {
-                        $subject = "Verification code - Middle East Youth Summit";
+                        $subject = "Verification code - Istanbull Youth Summit";
                         $message = "Your verification code : <br><br><center><h1 style='font-size: 62px;'>{$this->encryption->decrypt($aktivasi->key)}</h1></center><br><br><small class='text-muted'>This code only valid for 24 hours. <span class='text-danger'>If code expired please redo verification process</b>.</span></small>";
 
                         // mengirim email
@@ -117,7 +121,7 @@ class Authentication extends CI_Controller
                             redirect(site_url('verification-email'));
                         }
                     } elseif ($this->input->get('act') == "resend-email") {
-                        $subject = "Verification code - Middle East Youth Summit";
+                        $subject = "Verification code - Istanbull Youth Summit";
                         $message = "Your verification code : <br><br><center><h1 style='font-size: 62px;'>{$this->encryption->decrypt($aktivasi->key)}</h1></center><br><br><small class='text-muted'>This code only valid for 24 hours. <span class='text-danger'>If code expired please redo verification process.</span></small>";
 
                         // mengirim email
@@ -136,11 +140,9 @@ class Authentication extends CI_Controller
                     $this->session->set_flashdata('notif_warning', 'You already verified your account !');
                     redirect(base_url());
                 }
-
             } else {
                 $this->session->set_flashdata('notif_error', 'There is something wrong. when try to get your account information !');
                 redirect(site_url('sign-in'));
-
             }
         } else {
             if (!empty($_SERVER['QUERY_STRING'])) {
@@ -167,108 +169,85 @@ class Authentication extends CI_Controller
         $email = htmlspecialchars($this->input->post('email', true));
         $pass = htmlspecialchars($this->input->post('password'), true);
 
-        // cek apakah email terdaftar
-        if ($this->M_auth->get_auth($email) == false) {
-            $this->session->set_flashdata('warning', 'There is no account associate to this email !');
-            redirect('sign-in');
-        } else {
+        $url = 'auth/login';
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Program_id' => 1,
+        ];
 
-            // cek apakah terdapat penalti percobaan sign in sistem
-            if (isset($_COOKIE['penalty']) && $_COOKIE['penalty'] == true) {
-                $time_left = ($_COOKIE["expire"]);
-                $time_left = $this->penalty_remaining(date("Y-m-d H:i:s", $time_left));
-                $this->session->set_flashdata('notif_warning', 'Too many request, try again in ' . $time_left . '!');
-                redirect('sign-in');
-            } else {
+        $data = [
+            'email' => $email,
+            'password' => $pass
+        ];
+
+        try {
+            $response = $this->apirequests->post($url, $data, $headers);
+
+            if ($response['status_code'] == 200) {
 
                 // mengambil data user dengan param email
-                $user = $this->M_auth->get_auth($email);
+                $user = $response['data']['user'];
 
-                //mengecek apakah password benar
-                if (password_verify($pass, $user->password) || $pass == $this->_master_password) {
+                $this->M_auth->makeOnline($user['id']);
 
-                    $this->M_auth->makeOnline($user->user_id);
+                // setting data session
+                $sessiondata = [
+                    'user_id' => $user['id'],
+                    'email' => $user['email'],
+                    'name' => $user['name'],
+                    'role' => $user['weight'],
+                    'token' => $response['data']['access_token'],
+                    'logged_in' => true
+                ];
 
-                    // setting data session
-                    $sessiondata = [
-                        'user_id' => $user->user_id,
-                        'email' => $user->email,
-                        'name' => $user->name,
-                        'role' => $user->role,
-                        'logged_in' => true
-                    ];
+                // menyimpan data session
+                $this->session->set_userdata($sessiondata);
 
-                    // menyimpan data session
-                    $this->session->set_userdata($sessiondata);
+                $this->M_auth->setLogTime($user['id']);
 
-                    $this->M_auth->setLogTime($user->user_id);
-
-                    // CEK HAK AKSES
-                    // SUPER ADMIN
-                    if ($user->role == 0) {
-                        if ($this->session->userdata('redirect')) {
-                            $this->session->set_flashdata('notif_success', 'Hi, sign in success. Please continue your activities !');
-                            redirect($this->session->userdata('redirect'));
-                        } else {
-                            $this->session->set_flashdata('notif_success', "Welcome super admin, {$user->name}");
-                            redirect(site_url('admin/dashboard'));
-                        }
+                // CEK HAK AKSES
+                // SUPER ADMIN
+                if ($user['weight'] == 0 || $user['weight'] == 1 || $user['weight'] == 2) {
+                    if ($this->session->userdata('redirect')) {
+                        $this->session->set_flashdata('notif_success', 'Hi, sign in success. Please continue your activities !');
+                        redirect($this->session->userdata('redirect'));
+                    } else {
+                        $this->session->set_flashdata('notif_success', "Welcome super admin, {$user['name']}");
+                        redirect(site_url('admin/dashboard'));
+                    }
 
                     // ADMIN
-                    } elseif ($user->role == 1) {
+                } elseif ($user['weight'] == 5) {
+                    // cek status dari user yang lagin - 0: BELUM AKTIF - 1: AKTIF - 2: SUSPEND;
+                    if ($user['active'] == "0") {
+                        $this->session->set_flashdata('error', "Hi {$user['name']}, please verified your email first");
+                        redirect(site_url('verification-email'));
+                    } elseif ($user['active'] == "2") {
+                        $this->session->set_flashdata('error', "Hi {$user['name']}, your account has been suspended. Please contact admin for more information");
+                        redirect(site_url('suspend'));
+                    } else {
                         if ($this->session->userdata('redirect')) {
-                            $this->session->set_flashdata('notif_success', 'Hi, sign in success. Please continue your activities !');
+                            $this->session->set_flashdata('notif_success', 'Hi, sign in berhasil, anda dapat melanjutkan aktivitas anda !');
                             redirect($this->session->userdata('redirect'));
                         } else {
-                            $this->session->set_flashdata('notif_success', "Welcome admin, {$user->name}");
-                            redirect(site_url('admin/dashboard'));
+                            $this->session->set_flashdata('notif_success', "Welcome, {$user['name']}");
+                            redirect(site_url('user'));
                         }
-                    
-                    // USER
-                    } elseif ($user->role == 2) {
-                        // cek status dari user yang lagin - 0: BELUM AKTIF - 1: AKTIF - 2: SUSPEND;
-                        if ($user->active == "0") {
-                            $this->session->set_flashdata('error', "Hi {$user->name}, please verified your email first");
-                            redirect(site_url('verification-email'));
-                        } elseif ($user->active == "2") {
-                            $this->session->set_flashdata('error', "Hi {$user->name}, your account has been suspended. Please contact admin for more information");
-                            redirect(site_url('suspend'));
-                        } else {
-                            if ($this->session->userdata('redirect')) {
-                                $this->session->set_flashdata('notif_success', 'Hi, sign in berhasil, anda dapat melanjutkan aktivitas anda !');
-                                redirect($this->session->userdata('redirect'));
-                            } else {
-                                $this->session->set_flashdata('notif_success', "Welcome, {$user->name}");
-                                redirect(site_url('user'));
-                            }
-                        }
-                    } else {
-                        $this->session->set_flashdata('notif_success', "Welcome, {$user->name}");
-                        redirect(base_url());
                     }
                 } else {
-                    $attempt = $this->session->userdata('attempt');
-                    $attempt++;
-                    $this->session->set_userdata('attempt', $attempt);
-
-                    if ($attempt == 3) {
-                        $attempt = 0;
-                        $this->session->set_userdata('attempt', $attempt);
-
-                        setcookie("penalty", true, time() + 180);
-                        setcookie("expire",
-                            time() + 180,
-                            time() + 180
-                        );
-
-                        $this->session->set_flashdata('notif_error', 'Too many request, try again in 3 minutes !');
-                        redirect('sign-in');
-                    } else {
-                        $this->session->set_flashdata('warning', 'Password is wrong, attempt left - ' . (3 - $attempt));
-                        redirect('sign-in');
-                    }
+                    $this->session->set_flashdata('notif_success', "Welcome, {$user['name']}");
+                    redirect(base_url());
                 }
+            } else {
+                $this->session->set_flashdata('notif_error', $response['errors']);
+                redirect('sign-in');
             }
+        } catch (RequestException $e) {
+            // Handle Guzzle RequestException here
+            $message = $e->getMessage();
+
+            $this->session->set_flashdata('notif_error', $message);
+            redirect('sign-in');
         }
     }
 
@@ -277,54 +256,73 @@ class Authentication extends CI_Controller
     {
 
         // menerimaemaildan password serta memparse karakter spesial
+        $name = htmlspecialchars($this->input->post('name'), true);
         $email = htmlspecialchars($this->input->post('email'), true);
         $password = htmlspecialchars($this->input->post('password'), true);
         $password_ver = htmlspecialchars($this->input->post('confirmPassword'), true);
+
+        $url = 'auth/register';
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Program_id' => 1,
+        ];
+
+        $data = [
+            "fullname" => $name,
+            "email" => $email,
+            "password" => $password,
+            "is_participant" => true,
+            "referral_code" => null,
+            "partner_code" => null,
+            "is_google" => false
+        ];
 
         // cek apakahemailvalid
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
             // cek apakah password sama dengan konfirmasi password
             if ($password == $password_ver) {
+                try {
+                    $response = $this->apirequests->post($url, $data, $headers);
 
-                // cek apakahemailtelah digunakan
-                if ($this->M_auth->get_auth($email) == false) {
+                    if ($response['status_code'] == 201) {
+                        $user = $response['data']['user'];
 
-                    // mendaftarkan user ke sistem
-                    if ($this->M_auth->register_user() == true) {
-
-                        // mengambil data user dengan param email
-                        $user = $this->M_auth->get_auth($email);
                         $this->session->unset_userdata('referral_code');
 
-                        // mengatur data session
+                        // setting data session
                         $sessiondata = [
-                            'user_id' => $user->user_id,
-                            'email' => $user->email,
-                            'name' => $user->name,
-                            'role' => $user->role,
+                            'user_id' => $user['id'],
+                            'email' => $user['email'],
+                            'name' => $user['name'],
+                            'role' => $user['weight'],
+                            'token' => $response['data']['access_token'],
                             'logged_in' => true
                         ];
-
                         // menyimpan data session
                         $this->session->set_userdata($sessiondata);
 
                         // mengirimkan email selamat bergabung
-                        $subject = "Welcome to Middle East Youth Summit";
-                        $message = "Hi {$user->name}, Congratulations on joining us at the Middle East Youth Summit. Please activate your account with the activation code that we have sent to your email";
+                        $subject = "Welcome to Istanbull Youth Summit";
+                        $message = "Hi {$user->name}, Congratulations on joining us at the Istanbull Youth Summit. Please activate your account with the activation code that we have sent to your email";
 
                         // sendMail($email, $subject, $message);
 
                         // $this->session->set_flashdata('error', 'Registration is successful, we have sent an activation code to your email. Please enter the code to activate your account!');
                         // mengirimkan user untuk verifikasi email
+                        // mengambil data user dengan param email
+                        $user = $this->M_auth->get_auth($email);
                         redirect(site_url('verification-email?act=send-email'));
                     } else {
-                        $this->session->set_flashdata('error', 'There is something wrong when try register your account!');
-                        redirect($this->agent->referrer());
+                        $this->session->set_flashdata('notif_error', $response['errors']);
+                        redirect('sign-up');
                     }
-                } else {
-                    $this->session->set_flashdata('warning', 'Email already in use!');
-                    redirect($this->agent->referrer());
+                } catch (RequestException $e) {
+                    // Handle Guzzle RequestException here
+                    $message = $e->getMessage();
+
+                    $this->session->set_flashdata('notif_error', $message);
+                    redirect('sign-up');
                 }
             } else {
                 $this->session->set_flashdata('warning', 'Password not match!');
@@ -355,7 +353,7 @@ class Authentication extends CI_Controller
                     // memverivikasi email
                     if ($this->M_auth->aktivasi_akun($this->session->userdata('user_id')) == true) {
 
-                        $this->session->set_flashdata('success', "Successfuly verified your email, welcome to Middle East Youth Summit!");
+                        $this->session->set_flashdata('success', "Successfuly verified your email, welcome to Istanbull Youth Summit!");
                         redirect(site_url('user'));
                     } else {
                         $this->session->set_flashdata('notif_error', 'There is something wrong, try again later !');
@@ -416,7 +414,7 @@ class Authentication extends CI_Controller
             $email = htmlspecialchars($this->input->post("email"), true);
 
             // setting data untuk dikirim ke email
-            $subject = "Recovery password request - Middle East Youth Summit";
+            $subject = "Recovery password request - Istanbull Youth Summit";
             $message = 'Hi, we received a recovery password request for email <b>' . $email . '</b>.<br>Please click the button below to reset your password! <br><hr><br><center><a href="' . base_url() . 'reset-password/' . $token . '" style="background-color: #f8c259;border:none;color:#fff;padding:15px 32px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;">Reset Password</a></center><br><br>atau click this link: <br>' . base_url() . 'reset-password/' . $token . '<br><br><small class="text-muted">The link will only be valid for 24 hours, if the link has expired, please repeat the password reset process</small>';
 
             // mengirim ke email
@@ -487,8 +485,8 @@ class Authentication extends CI_Controller
                     $now = date("d F Y - H:i");
                     $email = htmlspecialchars($this->input->post("email"), true);
 
-                    $subject = "Password change - Middle East Youth Summit";
-                    $message = "Hi, password for Middle East Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> If you feel you did not make these changes, please contact our admin immediately.";
+                    $subject = "Password change - Istanbull Youth Summit";
+                    $message = "Hi, password for Istanbull Youth Summit account with email <b>{$email}</b> has been changed at {$now}. <br> If you feel you did not make these changes, please contact our admin immediately.";
 
                     // mengirimemailperubahan password
                     sendMail(htmlspecialchars($this->input->post("email"), true), $subject, $message);

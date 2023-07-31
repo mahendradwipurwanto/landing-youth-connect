@@ -16,7 +16,7 @@
 	<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 mb-5 justify-content-center">
 		<?php if(empty($announcements)):?>
 		<h1 class="h2">No announcements yet.</h1>
-		<p> Stay tuned for announcements at the Middle East Youth Summit</p>
+		<p> Stay tuned for announcements at the Istanbull Youth Summit</p>
 		<?php else:?>
 		<?php foreach ($announcements as $val):?>
 		<div class="col mb-5">

@@ -15,23 +15,31 @@ class TemplatePayment
         return $query->row()->value;
     }
 
+    public function getWebSettingsValue()
+    {
+        $query = $this->_ci->db->get_where('m_programs', ['id' => 1]);
+        return $query->row();
+    }
+
     public function view($content, $data = null)
     {
-        $data['web_title'] = $this->getSettingsValue('web_title');
-        $data['web_desc'] = $this->getSettingsValue('web_desc');
-        $data['web_icon'] = $this->getSettingsValue('web_icon');
-        $data['web_logo'] = $this->getSettingsValue('web_logo');
-        $data['web_logo_white'] = $this->getSettingsValue('web_logo_white');
-        $data['web_alamat'] = $this->getSettingsValue('web_alamat');
-        $data['web_telepon'] = $this->getSettingsValue('web_telepon');
-        $data['web_email'] = $this->getSettingsValue('web_email');
-        $data['web_guidelines'] = $this->getSettingsValue('web_guidelines');
-        $data['submission_deadline'] = $this->getSettingsValue('submission_deadline');
+        $web_data = $this->getWebSettingsValue();
 
-        $data['sosmed_ig'] = $this->getSettingsValue('sosmed_ig');
-        $data['sosmed_twitter'] = $this->getSettingsValue('sosmed_twitter');
-        $data['sosmed_facebook'] = $this->getSettingsValue('sosmed_facebook');
-        $data['sosmed_yt'] = $this->getSettingsValue('sosmed_yt');
+        $data['web_title'] = $web_data->title;
+        $data['web_desc'] = $web_data->description;
+        $data['web_icon'] = $web_data->icon;
+        $data['web_logo'] = $web_data->logo;
+        $data['web_logo_white'] = $web_data->logo_white;
+        $data['web_alamat'] = $web_data->address;
+        $data['web_telepon'] = $web_data->phone;
+        $data['web_email'] = $web_data->email;
+        $data['web_guidelines'] = '';
+        $data['submission_deadline'] = '';
+
+        $data['sosmed_ig'] = $web_data->instagram;
+        $data['sosmed_twitter'] = $web_data->twitter;
+        $data['sosmed_facebook'] = $web_data->facebook;
+        $data['sosmed_yt'] = $web_data->youtube;
 
         $this->_ci->load->view('template/payment/header', $data);
         $this->_ci->load->view('template/payment/navbar', $data);

@@ -520,7 +520,7 @@
 			<h4 class="v-text-align"
 				style="margin: 0px; line-height: 100%; text-align: center; word-wrap: break-word; font-weight: normal; font-family:Cabin,sans-serif; font-size: 10px;">
 				This email is generate by our system, please do not reply to this email
-				directly<br /><br />@Middle East Youth Summit
+				directly<br /><br />@Istanbull Youth Summit
 			</h4>
 		</div>
 	</div>

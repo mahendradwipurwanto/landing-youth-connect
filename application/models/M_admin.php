@@ -16,18 +16,18 @@ class M_admin extends CI_Model
 
     function countDashboard(){
 
-        $proyek = $this->db->get_where('tb_proyek', ['is_deleted' => 0])->num_rows();
-        $leader = $this->db->get_where('tb_auth', ['role' => 2, 'status' => 1])->num_rows();
-        $staff = $this->db->get_where('tb_auth', ['role' => 3, 'status' => 1])->num_rows();
-        $tasks = $this->db->get_where('tb_proyek_task', ['is_deleted' => 0])->num_rows();
+        $proyek = $this->db->get_where('tb_proyek', ['deleted_at' => null])->num_rows();
+        $leader = $this->db->get_where('access_auth', ['role' => 2, 'status' => 1])->num_rows();
+        $staff = $this->db->get_where('access_auth', ['role' => 3, 'status' => 1])->num_rows();
+        $tasks = $this->db->get_where('tb_proyek_task', ['deleted_at' => null])->num_rows();
 
         return ['proyek' => $proyek, 'leader' => $leader, 'staff' => $staff, 'tasks' => $tasks];
     }
 
     function get_allAccount(){
         $this->db->select('a.email, a.role, a.status, a.online, a.is_deleted, a.log_time, a.device, b.*')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id', 'inner')
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id', 'inner')
         ->order_by('a.log_time DESC')
         ;
 
@@ -36,8 +36,8 @@ class M_admin extends CI_Model
 
     function get_superAccount(){
         $this->db->select('a.email, a.role, a.status, a.online, a.is_deleted, a.log_time, a.device, b.*')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id', 'inner')
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id', 'inner')
         ->where(['a.role' => 0])
         ;
 
@@ -46,8 +46,8 @@ class M_admin extends CI_Model
 
     function get_adminAccount(){
         $this->db->select('a.email, a.role, a.status, a.online, a.is_deleted, a.log_time, a.device, b.*')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id', 'inner')
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id', 'inner')
         ->where(['a.role' => 1])
         ;
 
@@ -56,8 +56,8 @@ class M_admin extends CI_Model
 
     function getParticipans(){
         $this->db->select('*')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id', 'inner')
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id', 'inner')
         ->where(['a.role' => 2])
         ;
 
@@ -96,8 +96,8 @@ class M_admin extends CI_Model
         }  
 
         $this->db->select('*')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id', 'inner')
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id', 'inner')
         ->where(['a.role' => 2])
         ;
 
@@ -277,10 +277,11 @@ class M_admin extends CI_Model
         }  
 
         $this->db->select('a.active, a.status as auth_status, a.email, b.*, c.step as status_step, c.status, c.id as participant_id')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id', 'inner')
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id', 'inner')
         ->join('tb_participants c', 'a.user_id = c.user_id', 'inner')
-        ->where(['a.role' => 2, 'a.is_deleted' => 0])
+        ->join('access_token d', 'a.role_id = d.id', 'inner')
+        ->where(['d.weight' => 5, 'a.status !=' => 2])
         ;
 
         $this->db->where($filter);
@@ -396,9 +397,9 @@ class M_admin extends CI_Model
     }
 
     function get_statistik(){
-        $total_pendaftar = $this->db->get_where('tb_auth', ['role' => 2])->num_rows();
-        $new_register = $this->db->get_where('tb_auth', ['role' => 2, 'created_at <=' => time(), 'created_at >=' => strtotime("-1 day", time())])->num_rows();
-        $total_participants = $this->db->get_where('tb_participants', ['status' => 2, 'status' => 3, 'is_deleted' => 0])->num_rows();
+        $total_pendaftar = $this->db->get_where('access_auth', ['role_id' => 6])->num_rows();
+        $new_register = $this->db->get_where('access_auth', ['role_id' => 6, 'joined_at <=' => time(), 'joined_at >=' => strtotime("-1 day", time())])->num_rows();
+        $total_participants = $this->db->get_where('tb_participants', ['status' => 2, 'status' => 3, 'deleted_at' => null])->num_rows();
 
         $arr = [
             'total' => $total_pendaftar,
@@ -412,8 +413,8 @@ class M_admin extends CI_Model
     function getChartGender()
     {
         $this->db->select('a.gender, COUNT(a.user_id) as count');
-        $this->db->from('tb_user a');
-        $this->db->join('tb_auth b', 'a.user_id = b.user_id');
+        $this->db->from('access_user a');
+        $this->db->join('access_auth b', 'a.user_id = b.user_id');
         $this->db->where('b.role', 2);
         $this->db->group_by('gender');
         return $this->db->get()->result();
@@ -421,20 +422,20 @@ class M_admin extends CI_Model
 
     function getChartDaily()
     {
-        $this->db->select("id, FROM_UNIXTIME(created_at, '%Y-%m-%d') AS created_at, COUNT(FROM_UNIXTIME(created_at, '%Y-%m-%d')) AS count");
+        $this->db->select("id, FROM_UNIXTIME(joined_at, '%Y-%m-%d') AS created_at, COUNT(FROM_UNIXTIME(joined_at, '%Y-%m-%d')) AS count");
         $this->db->from('tb_participants');
-        $this->db->where(['status' => 2, 'created_at >' => 0]);
-        $this->db->group_by("FROM_UNIXTIME(created_at, '%Y-%m-%d')");
+        $this->db->where(['status' => 2, 'joined_at >' => 0]);
+        $this->db->group_by("FROM_UNIXTIME(joined_at, '%Y-%m-%d')");
         return $this->db->get()->result();
     }
 
     function getChartDailyAccount()
     {
-        $this->db->select("FROM_UNIXTIME(created_at, '%Y-%m-%d') AS created_at, COUNT(FROM_UNIXTIME(created_at, '%Y-%m-%d')) AS count");
-        $this->db->from('tb_auth');
-        $this->db->where(['role' => 2, 'is_deleted' => 0]);
-        $this->db->where(['created_at >' => 0]);
-        $this->db->group_by("FROM_UNIXTIME(created_at, '%Y-%m-%d')");
+        $this->db->select("FROM_UNIXTIME(joined_at, '%Y-%m-%d') AS created_at, COUNT(FROM_UNIXTIME(joined_at, '%Y-%m-%d')) AS count");
+        $this->db->from('access_auth');
+        $this->db->where(['role' => 2, 'status !=' => 2]);
+        $this->db->where(['joined_at >' => 0]);
+        $this->db->group_by("FROM_UNIXTIME(joined_at, '%Y-%m-%d')");
         return $this->db->get()->result();
     }
 
@@ -443,7 +444,7 @@ class M_admin extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
         ->join('m_payments_settings c', 'a.payment_setting = c.id')
-        ->where(['a.user_id' => $user_id, 'a.status !=' => 3, 'b.active' => 1, 'a.is_deleted' => 0])
+        ->where(['a.user_id' => $user_id, 'a.status !=' => 3, 'b.active' => 1, 'a.deleted_at' => null])
         ;
 
         $models = $this->db->get()->row();
@@ -465,10 +466,10 @@ class M_admin extends CI_Model
     function checkSubmitUserStatus($user_id = null){
         $this->db->select('a.*, b.*, c.email, d.fullname')
         ->from('tb_participants a')
-        ->join('tb_user b', 'a.user_id = b.user_id')
-        ->join('tb_auth c', 'a.user_id = c.user_id')
+        ->join('access_user b', 'a.user_id = b.user_id')
+        ->join('access_auth c', 'a.user_id = c.user_id')
         ->join('tb_ambassador d', 'a.referral_code = d.referral_code', 'left')
-        ->where(['a.is_deleted' => 0, 'c.status' => 1, 'a.user_id' => $user_id])
+        ->where(['a.deleted_at' => null, 'c.status' => 1, 'a.user_id' => $user_id])
         ;
 
         $models = $this->db->get()->row();
@@ -511,7 +512,7 @@ class M_admin extends CI_Model
 
     function activatedParticipant(){
         $this->db->where('user_id', $this->input->post('id'));
-        $this->db->update('tb_auth', ['active' => 1, 'status' => 1]);
+        $this->db->update('access_auth', ['active' => 1, 'status' => 1]);
         
         $this->db->where('user_id', $this->input->post('id'));
         $this->db->update('tb_token', ['status' => 1]);
@@ -521,9 +522,9 @@ class M_admin extends CI_Model
     public function getOnlineUsers()
     {
         $this->db->select('a.*, b.name')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id')
-        ->where(['a.online' => 1, 'a.is_deleted' => 0])
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id')
+        ->where(['a.online' => 1, 'a.status !=' => 2])
         ;
         return $this->db->get()->result();
 
@@ -533,10 +534,10 @@ class M_admin extends CI_Model
         $status = (int) $status;
         $this->db->select('a.user_id, c.name, c.phone, a.whatsapp_number, b.email, a.institution_workplace, e.en_short_name, a.tshirt_size')
         ->from('tb_participants a')
-        ->join('tb_auth b', 'a.user_id = b.user_id')
-        ->join('tb_user c', 'a.user_id = c.user_id')
+        ->join('access_auth b', 'a.user_id = b.user_id')
+        ->join('access_user c', 'a.user_id = c.user_id')
         ->join('m_countries e', 'a.nationality = e.num_code', 'left')
-        ->where(['a.is_deleted' => 0])
+        ->where(['a.deleted_at' => null])
         ;
 
         if($status == 2){
@@ -564,10 +565,10 @@ class M_admin extends CI_Model
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id', 'left')
         ->join('m_payments_settings c', 'a.payment_setting = c.id', 'left')
-        ->join('tb_auth d', 'a.user_id = d.user_id', 'left')
-        ->join('tb_user e', 'a.user_id = e.user_id', 'left')
+        ->join('access_auth d', 'a.user_id = d.user_id', 'left')
+        ->join('access_user e', 'a.user_id = e.user_id', 'left')
         ->join('tb_participants f', 'a.user_id = f.user_id', 'left')
-        ->where(['a.is_deleted' => 0])
+        ->where(['a.deleted_at' => null])
         ;
 
         if($status > 0){

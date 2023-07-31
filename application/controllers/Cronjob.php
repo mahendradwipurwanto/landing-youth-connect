@@ -189,9 +189,9 @@ class Cronjob extends CI_Controller
     public function checkPaymentsUpdate(){
         $this->db->select('a.user_id, b.name, d.email, a.is_payment, e.summit as batch')
         ->from('tb_participants a')
-        ->join('tb_user b', 'a.user_id = b.user_id')
+        ->join('access_user b', 'a.user_id = b.user_id')
         ->join('tb_payments c', 'a.user_id = c.user_id')
-        ->join('tb_auth d', 'a.user_id = d.user_id')
+        ->join('access_auth d', 'a.user_id = d.user_id')
         ->join('m_payments_batch e', 'c.payment_batch = e.id')
         ->where(['a.is_payment' => 0, 'c.status' => 2, 'e.is_registration' => 1]);
 
@@ -249,10 +249,10 @@ class Cronjob extends CI_Controller
     public function checkPaymentsPending(){
         $this->db->select('a.id, a.user_id, a.order_id, a.transaction_id, b.name, c.email, a.status, a.status_code')
         ->from('tb_payments a')
-        ->join('tb_user b', 'a.user_id = b.user_id')
-        ->join('tb_auth c', 'a.user_id = c.user_id')
+        ->join('access_user b', 'a.user_id = b.user_id')
+        ->join('access_auth c', 'a.user_id = c.user_id')
         ->join('m_payments_settings d', 'a.payment_setting = d.id')
-        ->where(['a.is_deleted' => 0, 'a.status' => 1, 'd.type_method' => 'gateway_midtrans']);
+        ->where(['a.deleted_at' => null, 'a.status' => 1, 'd.type_method' => 'gateway_midtrans']);
 
         $query = $this->db->get()->result();
         

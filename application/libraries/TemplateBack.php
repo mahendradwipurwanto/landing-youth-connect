@@ -25,9 +25,9 @@ class TemplateBack
     public function getOnlineUsers()
     {
         $this->_ci->db->select('a.*, b.name')
-        ->from('tb_auth a')
-        ->join('tb_user b', 'a.user_id = b.user_id')
-        ->where(['a.online' => 1, 'a.is_deleted' => 0])
+        ->from('access_auth a')
+        ->join('access_user b', 'a.user_id = b.user_id')
+        ->where(['a.online' => 1, 'a.status !=' => 2])
         ;
         return $this->_ci->db->get()->result();
 
@@ -41,7 +41,7 @@ class TemplateBack
         $data['web_desc'] = $web_data->description;
         $data['web_icon'] = $web_data->icon;
         $data['web_logo'] = $web_data->logo;
-        $data['web_logo_white'] = $web_data->logo;
+        $data['web_logo_white'] = $web_data->logo_white;
         $data['web_alamat'] = $web_data->address;
         $data['web_telepon'] = $web_data->phone;
         $data['web_email'] = $web_data->email;

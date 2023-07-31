@@ -10,22 +10,22 @@ class M_announcements extends CI_Model
 
     public function getPublicAnnouncements(){
         $this->db->select('*');
-        $this->db->from('tb_announcements');
-        $this->db->where(['is_public' => 1, 'is_deleted' => 0]);
+        $this->db->from('m_programs_announcements');
+        $this->db->where(['is_public' => 1, 'deleted_at' => null]);
         return $this->db->get()->result();
     }
 
     public function getParticipansAnnouncements(){
         $this->db->select('*');
-        $this->db->from('tb_announcements');
-        $this->db->where(['is_member' => 1, 'is_deleted' => 0]);
+        $this->db->from('m_programs_announcements');
+        $this->db->where(['is_member' => 1, 'deleted_at' => null]);
         return $this->db->get()->result();
     }
 
     public function getAnnouncementlist(){
         $this->db->select('*');
-        $this->db->from('tb_announcements');
-        $this->db->where(['is_deleted' => 0]);
+        $this->db->from('m_programs_announcements');
+        $this->db->where(['deleted_at' => null]);
         $models = $this->db->get()->result();
 
         $arr = [];
@@ -44,7 +44,7 @@ class M_announcements extends CI_Model
 
     public function getDetailAnnouncement($id){
         $this->db->select('*');
-        $this->db->from('tb_announcements');
+        $this->db->from('m_programs_announcements');
         $this->db->where('id', $id);
         $this->db->or_where('permalink', $id);
         $model = $this->db->get()->row();
@@ -76,7 +76,7 @@ class M_announcements extends CI_Model
             'created_at' => time()
         ];
 
-        $this->db->insert('tb_announcements', $data);
+        $this->db->insert('m_programs_announcements', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -110,7 +110,7 @@ class M_announcements extends CI_Model
         }
 
         $this->db->where('id', $id);
-        $this->db->update('tb_announcements', $data);
+        $this->db->update('m_programs_announcements', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -119,7 +119,7 @@ class M_announcements extends CI_Model
         $id = $this->input->post('id');
 
         $this->db->where('id', $id);
-        $this->db->update('tb_announcements', ['is_deleted' => 1]);
+        $this->db->update('m_programs_announcements', ['is_deleted' => 1]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 

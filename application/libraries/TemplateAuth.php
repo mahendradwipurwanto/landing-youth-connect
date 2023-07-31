@@ -29,7 +29,7 @@ class TemplateAuth
         $data['web_desc'] = $web_data->description;
         $data['web_icon'] = $web_data->icon;
         $data['web_logo'] = $web_data->logo;
-        $data['web_logo_white'] = $web_data->logo;
+        $data['web_logo_white'] = $web_data->logo_white;
         $data['web_alamat'] = $web_data->address;
         $data['web_telepon'] = $web_data->phone;
         $data['web_email'] = $web_data->email;

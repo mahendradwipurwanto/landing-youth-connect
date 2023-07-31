@@ -44,7 +44,7 @@ class M_ambassador extends CI_Model
     function getStatistik(){
         $this->db->select('a.*, b.referral_code as affiliate_code')
         ->from('tb_participants a')
-        ->join('tb_auth b', 'a.user_id = b.user_id')
+        ->join('access_auth b', 'a.user_id = b.user_id')
         ->where('a.is_deleted', 0)
         ->where('a.referral_code', $this->session->userdata('referral_code'))
         ->or_where('b.referral_code', $this->session->userdata('referral_code'))
@@ -71,8 +71,8 @@ class M_ambassador extends CI_Model
     function getAffiliate(){
         $this->db->select('a.*, b.email, b.referral_code as affiliate_code, c.*')
         ->from('tb_participants a')
-        ->join('tb_auth b', 'a.user_id = b.user_id')
-        ->join('tb_user c', 'a.user_id = c.user_id')
+        ->join('access_auth b', 'a.user_id = b.user_id')
+        ->join('access_user c', 'a.user_id = c.user_id')
         ->where('a.is_deleted', 0)
         ->where('a.referral_code', $this->session->userdata('referral_code'))
         ->or_where('b.referral_code', $this->session->userdata('referral_code'))

@@ -3,7 +3,7 @@
 	<div class="container content-space-t-3 content-space-t-lg-5 content-space-b-2">
 		<div class="w-md-75 w-lg-50 text-center mx-md-auto">
 				<span class="text-cap">Inspire The Next</span>
-				<h2>Middle East Youth Summit <?= date("Y");?></h2>
+				<h2>Istanbull Youth Summit <?= date("Y");?></h2>
 		</div>
 	</div>
 </div>
@@ -71,7 +71,7 @@
 					<div class="container content-space-1">
 						<div class="row justify-content-lg-between px-5">
 							<div class="col-lg-4 mb-5 mb-lg-0 d-flex align-items-center">
-								<h2 class="text-white">About Middle East Youth Summit (MEYS) <?= date("Y");?>
+								<h2 class="text-white">About Istanbull Youth Summit (MEYS) <?= date("Y");?>
 							</div>
 							<!-- End Col -->
 
@@ -86,7 +86,7 @@
 									future leaders, by using a moral based approach to education that focusing on
 									instilling nationalism character values and international culture for youth
 									generation.</p>
-								<p class="text-white-70" style="text-align: justify;">The Middle East Youth Summit
+								<p class="text-white-70" style="text-align: justify;">The Istanbull Youth Summit
 									is
 									not
 									just a gathering of young leaders from around the world but also sharing their
