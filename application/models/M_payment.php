@@ -11,7 +11,7 @@ class M_payment extends CI_Model
 
     public function getMidtransConfig($key = null)
     {
-        $models = $this->db->get_where('m_midtrans_config', ['deleted_at' => null, 'key' => $key])->row();
+        $models = $this->db->get_where('m_config_midtrans', ['deleted_at' => null, 'key' => $key])->row();
 
         if (!empty($models)) {
             return $models->value;
@@ -254,8 +254,8 @@ class M_payment extends CI_Model
             'active' => $active == 'on' ? 1 : 0,
             'data' => $data,
             'tutorial' => $tutorial,
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -282,7 +282,7 @@ class M_payment extends CI_Model
             'amount_usd' => $amount_usd,
             'remarks' => $remarks,
             'created_at' => time(),
-            'created_by' => $this->session->userdata('user_id')
+            // 'created_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->insert('tb_payments', $data);
@@ -295,8 +295,8 @@ class M_payment extends CI_Model
 
         $data = [
             'status' => 3,
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -436,8 +436,8 @@ class M_payment extends CI_Model
             if($detail->is_registration == 1){
                 $data = [
                     'is_payment' => 1,
-                    'modified_at' => time(),
-                    'modified_by' => $this->session->userdata('user_id')
+                    'updated_at' => time(),
+                    // 'modified_by' => $this->session->userdata('user_id')
                 ];
 
                 $this->db->where('user_id', $user_id);
@@ -446,8 +446,8 @@ class M_payment extends CI_Model
     
             $data = [
                 'status' => 2,
-                'modified_at' => time(),
-                'modified_by' => $this->session->userdata('user_id')
+                'updated_at' => time(),
+                // 'modified_by' => $this->session->userdata('user_id')
             ];
     
             $this->db->where('id', $id);
@@ -464,8 +464,8 @@ class M_payment extends CI_Model
 
         $data = [
             'status' => 4,
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -479,8 +479,8 @@ class M_payment extends CI_Model
 
         $data = [
             'status' => 1,
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -495,8 +495,8 @@ class M_payment extends CI_Model
 
         $data = [
             'status' => 3,
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -550,8 +550,8 @@ class M_payment extends CI_Model
     {
         $data = [
             'status'        => 3,
-            'modified_at'   => time(),
-            'modified_by'   => $this->session->userdata('user_id')
+            'updated_at'   => time(),
+            // 'modified_by'   => $this->session->userdata('user_id')
         ];
 
         $where = [
@@ -569,8 +569,8 @@ class M_payment extends CI_Model
     {
         $data = [
             'is_deleted'    => 1,
-            'modified_at'   => time(),
-            'modified_by'   => $this->session->userdata('user_id')
+            'updated_at'   => time(),
+            // 'modified_by'   => $this->session->userdata('user_id')
         ];
 
         $where = [
@@ -607,9 +607,9 @@ class M_payment extends CI_Model
             'status_code' => $data->status_code,
             'others' => $data->others,
             'created_at' => $data->created_at,
-            'created_by' => $data->created_by,
-            'modified_at' => time(),
-            'modified_by' => -1,
+            // 'created_by' => $data->created_by,
+            'updated_at' => time(),
+            // 'modified_by' => -1,
             'is_deleted' => $data->is_deleted,
         ];
 
@@ -623,11 +623,11 @@ class M_payment extends CI_Model
     }
 
     public function getMidtransPaymentsSettings($key){
-        return $this->db->get_where('m_midtrans_config', ['key' => $key])->row()->value;
+        return $this->db->get_where('m_config_midtrans', ['key' => $key])->row()->value;
     }
 
     public function getXenditPaymentsSettings($key){
-        return $this->db->get_where('m_xendit_config', ['key' => $key])->row()->value;
+        return $this->db->get_where('m_config_xendit', ['key' => $key])->row()->value;
     }
 
     // basic
@@ -645,23 +645,23 @@ class M_payment extends CI_Model
     {
         $_midtrans_prod = $this->input->post('_midtrans_prod');
         $this->db->where('key', '_midtrans_prod');
-        $this->db->update('m_midtrans_config', ['value' => $_midtrans_prod == 'on' ? 1 : 0]);
+        $this->db->update('m_config_midtrans', ['value' => $_midtrans_prod == 'on' ? 1 : 0]);
 
         $_server_key_sandbox = $this->input->post('_server_key_sandbox');
         $this->db->where('key', '_server_key_sandbox');
-        $this->db->update('m_midtrans_config', ['value' => $_server_key_sandbox]);
+        $this->db->update('m_config_midtrans', ['value' => $_server_key_sandbox]);
 
         $_client_key_sandbox = $this->input->post('_client_key_sandbox');
         $this->db->where('key', '_client_key_sandbox');
-        $this->db->update('m_midtrans_config', ['value' => $_client_key_sandbox]);
+        $this->db->update('m_config_midtrans', ['value' => $_client_key_sandbox]);
 
         $_server_key_production = $this->input->post('_server_key_production');
         $this->db->where('key', '_server_key_production');
-        $this->db->update('m_midtrans_config', ['value' => $_server_key_production]);
+        $this->db->update('m_config_midtrans', ['value' => $_server_key_production]);
 
         $_client_key_production = $this->input->post('_client_key_production');
         $this->db->where('key', '_client_key_production');
-        $this->db->update('m_midtrans_config', ['value' => $_client_key_production]);
+        $this->db->update('m_config_midtrans', ['value' => $_client_key_production]);
 
         return true;
     }
@@ -671,15 +671,15 @@ class M_payment extends CI_Model
     {
         $_xendit_prod = $this->input->post('_xendit_prod');
         $this->db->where('key', '_xendit_prod');
-        $this->db->update('m_xendit_config', ['value' => $_xendit_prod == 'on' ? 1 : 0]);
+        $this->db->update('m_config_xendit', ['value' => $_xendit_prod == 'on' ? 1 : 0]);
 
         $_secret_key_production = $this->input->post('_secret_key_production');
         $this->db->where('key', '_secret_key_production');
-        $this->db->update('m_xendit_config', ['value' => $_secret_key_production]);
+        $this->db->update('m_config_xendit', ['value' => $_secret_key_production]);
 
         $_secret_key_sandbox = $this->input->post('_secret_key_sandbox');
         $this->db->where('key', '_secret_key_sandbox');
-        $this->db->update('m_xendit_config', ['value' => $_secret_key_sandbox]);
+        $this->db->update('m_config_xendit', ['value' => $_secret_key_sandbox]);
 
         return true;
     }

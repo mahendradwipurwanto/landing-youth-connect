@@ -265,8 +265,8 @@ class Cronjob extends CI_Controller
 
                 $data = [
                     'status'        => $this->midtranspayments->cvtStatusToInt($result->transaction_status),
-                    'modified_at'   => time(),
-                    'modified_by'   => 0
+                    'updated_at'   => time(),
+                    // 'modified_by'   => 0
                 ];
 
                 $where = [

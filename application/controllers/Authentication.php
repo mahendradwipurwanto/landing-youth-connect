@@ -13,7 +13,7 @@ class Authentication extends CI_Controller
     {
         parent::__construct();
         $this->load->model(['M_auth', 'M_master']);
-        $this->load->library('apirequests');
+        // $this->load->library('apirequests');
 
         $this->_master_password = $this->M_auth->getSetting('master_password') != false ? $this->M_auth->getSetting('master_password') : 'SU_MHND19';
     }
@@ -204,7 +204,6 @@ class Authentication extends CI_Controller
                 $this->session->set_userdata($sessiondata);
 
                 $this->M_auth->setLogTime($user['id']);
-
                 // CEK HAK AKSES
                 // SUPER ADMIN
                 if ($user['weight'] == 0 || $user['weight'] == 1 || $user['weight'] == 2) {

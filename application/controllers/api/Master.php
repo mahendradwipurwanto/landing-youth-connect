@@ -11,7 +11,7 @@ class Master extends CI_Controller
         $this->load->model(['M_master', 'M_announcements', 'M_auth', 'M_user']);
         $this->load->library('uploader');
 
-        if ($this->session->userdata('role') > 1) {
+        if ($this->session->userdata('role') > 2) {
             $this->session->set_flashdata('warning', "You don`t have access to this page");
             redirect(base_url());
         }

@@ -120,19 +120,19 @@ class M_admin extends CI_Model
             $models[$key]->submit_data      = $submit['data'];
         
             if($val->status_submit == true){
-                if($val->submit_data->step == 1){
+                if($val->submit_data->submission_step == 1){
                     $models[$key]->step_status = 1;
-                }elseif($val->submit_data->step == 2){
+                }elseif($val->submit_data->submission_step == 2){
                     $models[$key]->step_status = 2;
-                }elseif($val->submit_data->step == 3){
+                }elseif($val->submit_data->submission_step == 3){
                     $models[$key]->step_status = 3;
-                }elseif($val->submit_data->step == 4){
+                }elseif($val->submit_data->submission_step == 4){
                     $models[$key]->step_status = 4;
-                }elseif($val->submit_data->step == 5){
+                }elseif($val->submit_data->submission_step == 5){
                     $models[$key]->step_status = 5;
-                }elseif($val->submit_data->step == 6 && $val->submit_data->status < 2){
+                }elseif($val->submit_data->submission_step == 6 && $val->submit_data->status < 2){
                     $models[$key]->step_status = 6;
-                }elseif($val->submit_data->step == 6 && $val->submit_data->status >= 2){
+                }elseif($val->submit_data->submission_step == 6 && $val->submit_data->status >= 2){
                     $models[$key]->step_status = 7;
                 }else{
                     $models[$key]->step_status = 0;
@@ -292,7 +292,7 @@ class M_admin extends CI_Model
         $models = $this->db->get()->result();
         foreach($models as $key => $val){
 
-            $models[$key]->step                 = '<span class="badge bg-soft-secondary">Not yet fill submission</span>';
+            $models[$key]->submission_step                 = '<span class="badge bg-soft-secondary">Not yet fill submission</span>';
             $models[$key]->statusAccount        = '<span class="badge bg-soft-danger">Unverified</span>';
             $models[$key]->statusSubmit         = '<span class="badge bg-soft-danger">Not Submitted</span>';
             $models[$key]->statusCheck          = '<span class="badge bg-soft-danger">Not Checked</span>';
@@ -318,25 +318,25 @@ class M_admin extends CI_Model
         
             if(!is_null($val->participant_id)){
                 if($val->status_step == 1){
-                    $models[$key]->step = '<span class="badge bg-soft-info">(1) Personal Data</span>';
+                    $models[$key]->submission_step = '<span class="badge bg-soft-info">(1) Personal Data</span>';
                     // $models[$key]->step_status = 1;
                 }elseif($val->status_step == 2){
-                    $models[$key]->step = '<span class="badge bg-soft-warning">(2) Others</span>';
+                    $models[$key]->submission_step = '<span class="badge bg-soft-warning">(2) Others</span>';
                     // $models[$key]->step_status = 2;
                 }elseif($val->status_step == 3){
-                    $models[$key]->step = '<span class="badge bg-soft-danger">(3) Question</span>';
+                    $models[$key]->submission_step = '<span class="badge bg-soft-danger">(3) Question</span>';
                     // $models[$key]->step_status = 3;
                 }elseif($val->status_step == 4){
-                    $models[$key]->step = '<span class="badge bg-soft-primary">(4) Programs</span>';
+                    $models[$key]->submission_step = '<span class="badge bg-soft-primary">(4) Programs</span>';
                     // $models[$key]->step_status = 4;
                 }elseif($val->status_step == 5){
-                    $models[$key]->step = '<span class="badge bg-blue-dark">(5) Self Photo</span>';
+                    $models[$key]->submission_step = '<span class="badge bg-blue-dark">(5) Self Photo</span>';
                     // $models[$key]->step_status = 5;
                 }elseif($val->status_step == 6 && $val->status < 2){
-                    $models[$key]->step = '<span class="badge bg-soft-success">(6) Payment & Agreement</span>';
+                    $models[$key]->submission_step = '<span class="badge bg-soft-success">(6) Payment & Agreement</span>';
                     // $models[$key]->step_status = 6;
                 }elseif($val->status_step == 6 && $val->status >= 2){
-                    $models[$key]->step = '<span class="badge bg-soft-success">Waiting for review</span>';
+                    $models[$key]->submission_step = '<span class="badge bg-soft-success">Waiting for review</span>';
                     // $models[$key]->step_status = 7;
                 }
             }
@@ -352,7 +352,7 @@ class M_admin extends CI_Model
 
                     $summary['totalSubmitted']  += 1;
                 }elseif($val->status == 3){
-                    $models[$key]->step               = '<span class="badge bg-soft-success">Reviewed</span>';
+                    $models[$key]->submission_step               = '<span class="badge bg-soft-success">Reviewed</span>';
                     $models[$key]->statusSubmit       = '<span class="badge bg-soft-info">Submitted</span>';
                     $models[$key]->statusCheck        = '<span class="badge bg-soft-success">Accepted</span>';
                     $models[$key]->submissionState    = 3;
@@ -360,7 +360,7 @@ class M_admin extends CI_Model
                     $summary['totalSubmitted']  += 1;
                     $summary['totalChecked']    += 1;
                 }elseif($val->status == 4){
-                    $models[$key]->step               = '<span class="badge bg-soft-success">Reviewed</span>';
+                    $models[$key]->submission_step               = '<span class="badge bg-soft-success">Reviewed</span>';
                     $models[$key]->statusSubmit       = '<span class="badge bg-soft-info">Submitted</span>';
                     $models[$key]->statusCheck        = '<span class="badge bg-soft-warning">Rejected</span>';
                     $models[$key]->submissionState    = 4;
@@ -464,11 +464,11 @@ class M_admin extends CI_Model
     }
 
     function checkSubmitUserStatus($user_id = null){
-        $this->db->select('a.*, b.*, c.email, d.fullname')
+        $this->db->select('a.*, b.*, c.email')
         ->from('tb_participants a')
         ->join('access_user b', 'a.user_id = b.user_id')
         ->join('access_auth c', 'a.user_id = c.user_id')
-        ->join('tb_ambassador d', 'a.referral_code = d.referral_code', 'left')
+        // ->join('tb_ambassador d', 'a.referral_code = d.referral_code', 'left')
         ->where(['a.deleted_at' => null, 'c.status' => 1, 'a.user_id' => $user_id])
         ;
 
@@ -532,7 +532,7 @@ class M_admin extends CI_Model
 
     public function getParticipantsExport($status = 0){
         $status = (int) $status;
-        $this->db->select('a.user_id, c.name, c.phone, a.whatsapp_number, b.email, a.institution_workplace, e.en_short_name, a.tshirt_size')
+        $this->db->select('a.user_id, c.name, c.phone, a.whatsapp, b.email, a.institution_workplace, e.en_short_name, a.tshirt_size')
         ->from('tb_participants a')
         ->join('access_auth b', 'a.user_id = b.user_id')
         ->join('access_user c', 'a.user_id = c.user_id')
@@ -551,7 +551,7 @@ class M_admin extends CI_Model
 
         if(!empty($models)){
             foreach($models as $key => $val){
-                $val->phone = is_null($val->whatsapp_number) ? $val->phone : $val->whatsapp_number;
+                $val->phone = is_null($val->whatsapp) ? $val->phone : $val->whatsapp;
                 $arr[$key] = $val;
             }
         }
@@ -561,7 +561,7 @@ class M_admin extends CI_Model
 
     public function getPaymentsExport($status = 0){
         $status = (int) $status;
-        $this->db->select('a.*, b.summit, c.payment_method, c.img_method, c.type_method, c.code_method, d.email, e.name, e.phone, f.whatsapp_number')
+        $this->db->select('a.*, b.summit, c.payment_method, c.img_method, c.type_method, c.code_method, d.email, e.name, e.phone, f.whatsapp')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id', 'left')
         ->join('m_payments_settings c', 'a.payment_setting = c.id', 'left')
@@ -582,7 +582,7 @@ class M_admin extends CI_Model
 
         if(!empty($models)){
             foreach($models as $key => $val){
-                $val->phone = is_null($val->whatsapp_number) ? $val->phone : $val->whatsapp_number;
+                $val->phone = is_null($val->whatsapp) ? $val->phone : $val->whatsapp;
                 $arr[$key] = $val;
             }
         }

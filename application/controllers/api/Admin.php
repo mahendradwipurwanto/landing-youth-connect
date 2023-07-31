@@ -11,7 +11,7 @@ class Admin extends CI_Controller
         $this->load->model(['M_master', 'M_admin', 'M_auth']);
         $this->load->library('uploader');
 
-        if ($this->session->userdata('role') > 1) {
+        if ($this->session->userdata('role') > 2) {
             $this->session->set_flashdata('warning', "You don`t have access to this page");
             redirect(base_url());
         }

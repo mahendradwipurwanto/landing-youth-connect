@@ -21,20 +21,20 @@ class TemplateUser
         return $query->row()->value;
     }
 
-    // public function countAnnouncements()
-    // {
-    //     $query = $this->_ci->db->get_where('m_programs_announcements', ['is_member' => 1 , 'deleted_at' => null]);
-    //     return $query->num_rows();
-    // }
+    public function countAnnouncements()
+    {
+        $query = $this->_ci->db->get_where('m_programs_announcements', ['is_member' => 1 , 'deleted_at' => null]);
+        return $query->num_rows();
+    }
 
     public function countDocuments()
     {
-        $query = $this->_ci->db->get_where('m_programs_documents', ['deleted_at' => null]);
+        $query = $this->_ci->db->get_where('m_programs_document', ['deleted_at' => null]);
         return $query->num_rows();
     }
 
     function getUserParticipans($user_id){
-        $this->_ci->db->select('a.*, b.*, c.*, d.fullname')
+        $this->_ci->db->select('a.*, b.*, c.*')
         ->from('tb_participants a')
         ->join('access_user b', 'a.user_id = b.user_id')
         ->join('access_auth c', 'a.user_id = c.user_id')
@@ -61,6 +61,9 @@ class TemplateUser
         $data['web_email'] = $web_data->email;
         $data['web_guidelines'] = '';
         $data['submission_deadline'] = '';
+
+        $data['countAnnouncements'] = $this->countAnnouncements();
+        $data['countDocuments'] = $this->countDocuments();
 
         $data['sosmed_ig'] = $web_data->instagram;
         $data['sosmed_twitter'] = $web_data->twitter;

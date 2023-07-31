@@ -249,7 +249,7 @@
 											<!-- End Col -->
 
 											<div class="col-sm-8 mb-2 mb-sm-0">
-												<span><?= $participants->whatsapp_number;?></span>
+												<span><?= $participants->whatsapp;?></span>
 											</div>
 											<!-- End Col -->
 										</div>
@@ -556,7 +556,7 @@
 						<!-- Step -->
 						<ul id="formParticipansProgress" class="js-step-progress step step-icon-sm mb-7">
 							<li
-								class="step-item <?= isset($participants->step) && $participants->step == 1 ? 'is-valid' : '';?>">
+								class="step-item <?= isset($participants->step) && $participants->submission_step == 1 ? 'is-valid' : '';?>">
 								<a class="step-content-wrapper" href="javascript:;"
 									data-hs-step-form-next-options='{"targetSelector": "#formBasic"}'>
 									<span class="step-icon step-icon-soft-dark">1</span>
@@ -567,7 +567,7 @@
 							</li>
 
 							<li
-								class="step-item <?= isset($participants->step) && $participants->step >= 2 ? 'is-valid' : '';?>">
+								class="step-item <?= isset($participants->step) && $participants->submission_step >= 2 ? 'is-valid' : '';?>">
 								<a class="step-content-wrapper" href="javascript:;"
 									data-hs-step-form-next-options='{"targetSelector": "#formOthers"}'>
 									<span class="step-icon step-icon-soft-dark">2</span>
@@ -578,7 +578,7 @@
 							</li>
 
 							<li
-								class="step-item <?= isset($participants->step) && $participants->step >= 3 ? 'is-valid' : '';?>">
+								class="step-item <?= isset($participants->step) && $participants->submission_step >= 3 ? 'is-valid' : '';?>">
 								<a class="step-content-wrapper" href="javascript:;"
 									data-hs-step-form-next-options='{"targetSelector": "#formEssay"}'>
 									<span class="step-icon step-icon-soft-dark">3</span>
@@ -589,7 +589,7 @@
 							</li>
 
 							<li
-								class="step-item <?= isset($participants->step) && $participants->step >= 4 ? 'is-valid' : '';?>">
+								class="step-item <?= isset($participants->step) && $participants->submission_step >= 4 ? 'is-valid' : '';?>">
 								<a class="step-content-wrapper" href="javascript:;"
 									data-hs-step-form-next-options='{"targetSelector": "#formProgram"}'>
 									<span class="step-icon step-icon-soft-dark">4</span>
@@ -600,7 +600,7 @@
 							</li>
 
 							<li
-								class="step-item <?= isset($participants->step) && $participants->step >= 5 ? 'is-valid' : '';?>">
+								class="step-item <?= isset($participants->step) && $participants->submission_step >= 5 ? 'is-valid' : '';?>">
 								<a class="step-content-wrapper" href="javascript:;"
 									data-hs-step-form-next-options='{"targetSelector": "#formSelfPhoto"}'>
 									<span class="step-icon step-icon-soft-dark">5</span>
@@ -611,7 +611,7 @@
 							</li>
 
 							<li
-								class="step-item <?= isset($participants->step) && $participants->step == 6 ? 'is-valid' : '';?>">
+								class="step-item <?= isset($participants->step) && $participants->submission_step == 6 ? 'is-valid' : '';?>">
 								<a class="step-content-wrapper" href="javascript:;"
 									data-hs-step-form-next-options='{"targetSelector": "#formSubmission"}'>
 									<span class="step-icon step-icon-soft-dark stepy-last">6</span>
@@ -850,7 +850,7 @@
 											id="validationFormWhatsapp" placeholder="Whatsapp Number"
 											aria-label="Whatsapp Number" required
 											data-msg="Please enter a valid whatsapp number."
-											<?= isset($participants->whatsapp_number) ? 'value="'.$participants->whatsapp_number.'"' : '';?>>
+											<?= isset($participants->whatsapp) ? 'value="'.$participants->whatsapp.'"' : '';?>>
 										<span class="form-text"><b>Example:</b> +628123456789 </span>
 										<span class="invalid-feedback">Please enter a valid whatsapp number.</span>
 									</div>
@@ -1107,7 +1107,7 @@
 											name="essay[<?= $val->id;?>][]"
 											<?= $val->required == 1 ? 'required' : '';?> rows="5">
 										<?php endif;?>
-										<span class="form-text"> <?= $val->desc;?></span>
+										<span class="form-text"> <?= $val->description;?></span>
 										<span class="invalid-feedback">Please enter a achievements.</span>
 									</div>
 								</div>
@@ -1213,7 +1213,7 @@
 										<input type="text" class="form-control" name="sourceAccount"
 											id="validationFormUsernameLabel" placeholder="Source Account / Name"
 											aria-label="sourceAccount"
-											value="<?= isset($participants->source_account) ? $participants->source_account : '' ?>"
+											value="<?= isset($participants->source) ? $participants->source : '' ?>"
 											required data-msg="Please enter your fullname.">
 										<span class="invalid-feedback">Please enter a valid source.</span>
 									</div>
@@ -1442,7 +1442,7 @@
 									</button>
 
 									<div class="ms-auto">
-										<?php if(isset($participants->is_payment) && $participants->is_payment == 1):?>
+										<?php if(isset($participants->status) && $participants->status == 2):?>
 										<button type="button" class="btn btn-primary btn-sm" id="sendSubmission"
 											onclick="stepSixSave()">Submit
 											<i class="bi-check small"></i></button>

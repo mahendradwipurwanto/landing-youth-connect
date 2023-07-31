@@ -22,7 +22,7 @@ class Admin extends CI_Controller
             redirect('sign-in');
         }
 
-        if ($this->session->userdata('role') > 1) {
+        if ($this->session->userdata('role') > 2) {
             $this->session->set_flashdata('warning', "You don`t have access to this page");
             redirect(base_url());
         }
@@ -95,7 +95,7 @@ class Admin extends CI_Controller
         $this->templateback->view('admin/participans/list');
     }
 
-    public function participans_detail($participans_id = null)
+    public function participans_detail($participant_id = null)
     {
         $this->templateback->view('admin/dashboard');
     }
@@ -183,8 +183,8 @@ class Admin extends CI_Controller
 
         if (!is_null($this->M_user->getUserParticipans($user_id))) {
             $data['participants']   = $this->M_user->getUserParticipans($user_id);
-            $participans_id         = isset($data['participants']->id) ? $data['participants']->id : null;
-            $data['p_essay']        = $this->M_user->getUserParticipansEssay($user_id, $participans_id);
+            $participant_id         = isset($data['participants']->id) ? $data['participants']->id : null;
+            $data['p_essay']        = $this->M_user->getUserParticipansEssay($user_id, $participant_id);
             $data['m_essay']        = $this->M_master->getParticipansEssay();
             $data['countries']      = $this->M_user->getAllCountries();
 

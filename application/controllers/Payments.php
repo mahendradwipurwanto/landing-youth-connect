@@ -22,7 +22,7 @@ class Payments extends CI_Controller
             redirect('sign-in');
         }
 
-        if ($this->session->userdata('role') > 1) {
+        if ($this->session->userdata('role') > 2) {
             $this->session->set_flashdata('warning', "You don`t have access to this page");
             redirect(base_url());
         }

@@ -43,7 +43,7 @@
   							Countries</a>
   					</li>
   					<?php if($this->session->userdata('logged_in') || $this->session->userdata('logged_in') == true):?>
-  					<?php if($this->session->userdata('role') == 0 || $this->session->userdata('role') == 1):?>
+  					<?php if($this->session->userdata('role') == 0 || $this->session->userdata('role') == 1 || $this->session->userdata('role') == 2):?>
   					<li class="nav-item">
   						<a class="nav-link fs-15" aria-current="page" href="<?= site_url('user');?>"
   							role="button">User page</a>

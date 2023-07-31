@@ -153,8 +153,8 @@
 
 												<div class="js-form-message">
 													<input type="text" class="form-control form-control-sm"
-														onkeypress="return isNumberKey(event)" name="whatsapp_number"
-														id="validationFormWhatsapp" value="<?= $val->whatsapp_number;?>"
+														onkeypress="return isNumberKey(event)" name="whatsapp"
+														id="validationFormWhatsapp" value="<?= $val->whatsapp;?>"
 														aria-label="Whatsapp Number" required
 														data-msg="Please enter a valid whatsapp number.">
 													<span class="form-text"><b>Example:</b> +628123456789 </span>
@@ -354,10 +354,10 @@
 
 						<div class="js-form-message">
 							<input type="text" class="form-control form-control-sm"
-								onkeypress="return isNumberKey(event)" name="whatsapp_number"
+								onkeypress="return isNumberKey(event)" name="whatsapp"
 								id="validationFormWhatsapp" placeholder="Whatsapp Number" aria-label="Whatsapp Number"
 								required data-msg="Please enter a valid whatsapp number."
-								<?= isset($participants->whatsapp_number) ? 'value="'.$participants->whatsapp_number.'"' : '';?>>
+								<?= isset($participants->whatsapp) ? 'value="'.$participants->whatsapp.'"' : '';?>>
 							<span class="form-text"><b>Example:</b> +628123456789 </span>
 							<span class="invalid-feedback">Please enter a valid whatsapp number.</span>
 						</div>

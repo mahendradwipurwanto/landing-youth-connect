@@ -72,7 +72,7 @@ class M_announcements extends CI_Model
             'permalink' => createPermalink($subject),
             'is_public' => $is_public,
             'is_member' => $is_member,
-            'created_by' => $this->session->userdata('user_id'),
+            // 'created_by' => $this->session->userdata('user_id'),
             'created_at' => time()
         ];
 
@@ -94,8 +94,8 @@ class M_announcements extends CI_Model
                 'content' => $content,
                 'is_public' => $is_public,
                 'is_member' => $is_member,
-                'modified_by' => $this->session->userdata('user_id'),
-                'modified_at' => time()
+                // 'modified_by' => $this->session->userdata('user_id'),
+                'updated_at' => time()
             ];
         }else{
             $data = [
@@ -104,8 +104,8 @@ class M_announcements extends CI_Model
                 'poster' => $poster,
                 'is_public' => $is_public,
                 'is_member' => $is_member,
-                'modified_by' => $this->session->userdata('user_id'),
-                'modified_at' => time()
+                // 'modified_by' => $this->session->userdata('user_id'),
+                'updated_at' => time()
             ];
         }
 

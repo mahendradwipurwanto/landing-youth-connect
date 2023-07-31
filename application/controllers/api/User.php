@@ -270,7 +270,7 @@ class User extends CI_Controller
 
                 // // phone
                 $pdf->SetXY(81, 160.1);
-                $pdf->Write(0, $user->whatsapp_number);
+                $pdf->Write(0, $user->whatsapp);
 
                 // // email
                 $pdf->SetXY(81, 166.8);

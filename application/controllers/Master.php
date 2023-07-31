@@ -10,7 +10,7 @@ class Master extends CI_Controller
         parent::__construct();
         $this->load->model(['M_master', 'M_announcements', 'M_home', 'M_user']);
 
-        if ($this->session->userdata('role') > 1) {
+        if ($this->session->userdata('role') > 2) {
             $this->session->set_flashdata('warning', "You don`t have access to this page");
             redirect(base_url());
         }

@@ -56,8 +56,8 @@ class Payments extends CI_Controller
         if (!is_null($detail_payment)) {
             $data = [
                 'status'        => $this->midtranspayments->cvtStatusToInt($result->transaction_status),
-                'modified_at'   => time(),
-                'modified_by'   => 0
+                'updated_at'   => time(),
+                // 'modified_by'   => 0
             ];
 
             $where = [
@@ -191,7 +191,7 @@ class Payments extends CI_Controller
             'amount_usd' => $amount_usd,
             'status' => 1,
             'created_at' => time(),
-            'created_by' => $user_id
+            // 'created_by' => $user_id
         ];
 
         $save = $this->M_payment->savePaymentG($data_load);
@@ -255,7 +255,7 @@ class Payments extends CI_Controller
                 'log' => json_encode($transaction_data),
                 'order_id' => $order_id,
                 'created_at' => time(),
-                'created_by' => $this->session->userdata('user_id')
+                // 'created_by' => $this->session->userdata('user_id')
             ];
 
             $this->M_payment->saveLogPayment($log);
@@ -268,7 +268,7 @@ class Payments extends CI_Controller
                 'log' => $snapToken,
                 'order_id' => $order_id,
                 'created_at' => time(),
-                'created_by' => $this->session->userdata('user_id')
+                // 'created_by' => $this->session->userdata('user_id')
             ];
 
             $this->M_payment->saveLogPayment($log);
@@ -296,8 +296,8 @@ class Payments extends CI_Controller
         $data = $response;
 
         $update = [
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $data = array_merge($data, $update);
@@ -315,7 +315,7 @@ class Payments extends CI_Controller
             'log' => "Success make payments, waiting payment from user if still pending",
             'order_id' => $response['order_id'],
             'created_at' => time(),
-            'created_by' => $this->session->userdata('user_id')
+            // 'created_by' => $this->session->userdata('user_id')
         ];
 
         $this->M_payment->saveLogPayment($log);
@@ -335,8 +335,8 @@ class Payments extends CI_Controller
 
         $data = [
             'status'        => $this->midtranspayments->cvtStatusToInt($data->transaction_status),
-            'modified_at'   => time(),
-            'modified_by'   => $this->session->userdata('user_id')
+            'updated_at'   => time(),
+            // 'modified_by'   => $this->session->userdata('user_id')
         ];
 
         $where = [
@@ -358,8 +358,8 @@ class Payments extends CI_Controller
         $this->veritrans->cancel($order_id);
         $data = [
             'status'        => 3,
-            'modified_at'   => time(),
-            'modified_by'   => $this->session->userdata('user_id')
+            'updated_at'   => time(),
+            // 'modified_by'   => $this->session->userdata('user_id')
         ];
 
         $where = [

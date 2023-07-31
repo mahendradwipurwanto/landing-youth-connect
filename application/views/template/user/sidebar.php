@@ -90,10 +90,13 @@
     									</a>
     								</li>
     								<li class="nav-item">
-    									<a class="nav-link <?= ($this->uri->segment(2) == "payment" ? "active" : "") ?>"
-    										href="<?= site_url('user/payment'); ?>">
+    									<!-- <a class="nav-link <?= ($this->uri->segment(2) == "payment" ? "active" : "") ?>"
+    										href="<?= site_url('user/payment'); ?>"> 
     										<i class="bi-credit-card nav-icon"></i> Payment
-    									</a>
+    									</a> -->
+    									<span class="nav-link text-secondary <?= ($this->uri->segment(2) == "payment" ? "active" : "") ?>"> 
+    										<i class="bi-credit-card nav-icon"></i> Payment
+    									</span>
     								</li>
     								<li class="nav-item">
     									<a class="nav-link <?= ($this->uri->segment(2) == "announcements" ? "active" : "") ?>"
@@ -103,7 +106,7 @@
     											class="badge bg-soft-info text-info rounded-pill nav-link-badge"><?= $countAnnouncements;?></span><?php endif;?>
     									</a>
     								</li>
-    								<li class="nav-item">
+    								<li class="nav-item d-none">
     									<a class="nav-link <?= ($this->uri->segment(2) == "travel-documents" ? "active" : "") ?>"
     										href="<?= site_url('user/travel-documents'); ?>">
     										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="nav-icon" style="margin-left: -7.5px; margin-right: 6.5px;"

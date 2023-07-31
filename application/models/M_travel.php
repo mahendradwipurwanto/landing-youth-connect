@@ -42,7 +42,7 @@ class M_travel extends CI_Model
 
             $log = [
                 'created_at'        => time(),
-                'created_by'        => $this->session->userdata('user_id'),
+                // 'created_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->insert('travel_passport', array_merge($data, $log));
@@ -51,8 +51,8 @@ class M_travel extends CI_Model
         } else {
 
             $log = [
-                'modified_at'        => time(),
-                'modified_by'        => $this->session->userdata('user_id'),
+                'updated_at'        => time(),
+                // 'modified_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->where('id', $this->input->post('id'));
@@ -82,7 +82,7 @@ class M_travel extends CI_Model
 
             $log = [
                 'created_at'        => time(),
-                'created_by'        => $this->session->userdata('user_id'),
+                // 'created_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->insert('travel_flight', array_merge($data, $log));
@@ -91,8 +91,8 @@ class M_travel extends CI_Model
         } else {
 
             $log = [
-                'modified_at'        => time(),
-                'modified_by'        => $this->session->userdata('user_id'),
+                'updated_at'        => time(),
+                // 'modified_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->where('id', $this->input->post('id'));
@@ -114,7 +114,7 @@ class M_travel extends CI_Model
 
             $log = [
                 'created_at'        => time(),
-                'created_by'        => $this->session->userdata('user_id'),
+                // 'created_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->insert('travel_residance', array_merge($data, $log));
@@ -123,8 +123,8 @@ class M_travel extends CI_Model
         } else {
 
             $log = [
-                'modified_at'        => time(),
-                'modified_by'        => $this->session->userdata('user_id'),
+                'updated_at'        => time(),
+                // 'modified_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->where('id', $this->input->post('id'));
@@ -144,7 +144,7 @@ class M_travel extends CI_Model
 
             $log = [
                 'created_at'        => time(),
-                'created_by'        => $this->session->userdata('user_id'),
+                // 'created_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->insert('travel_visa', array_merge($data, $log));
@@ -153,8 +153,8 @@ class M_travel extends CI_Model
         } else {
 
             $log = [
-                'modified_at'        => time(),
-                'modified_by'        => $this->session->userdata('user_id'),
+                'updated_at'        => time(),
+                // 'modified_by'        => $this->session->userdata('user_id'),
             ];
 
 
@@ -176,7 +176,7 @@ class M_travel extends CI_Model
 
             $log = [
                 'created_at'        => time(),
-                'created_by'        => $this->session->userdata('user_id'),
+                // 'created_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->insert('travel_vaccine', array_merge($data, $log));
@@ -185,8 +185,8 @@ class M_travel extends CI_Model
         } else {
 
             $log = [
-                'modified_at'        => time(),
-                'modified_by'        => $this->session->userdata('user_id'),
+                'updated_at'        => time(),
+                // 'modified_by'        => $this->session->userdata('user_id'),
             ];
 
             $this->db->where('id', $this->input->post('id'));

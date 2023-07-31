@@ -36,7 +36,7 @@ class User extends CI_Controller
         // cek akun aktif
         $user = $this->M_auth->get_userByID($this->session->userdata('user_id'));
         if ($user != false) {
-            if ($user->active == 0) {
+            if ($user->status == 0) {
                 $this->session->set_flashdata('error', "Hi {$user->name}, please verified your email first");
                 redirect(site_url('verification-email'));
             }
@@ -194,8 +194,8 @@ class User extends CI_Controller
         $data['btn_sign_in']    = "btn-outline-light";
 
         $data['participants']   = $this->M_user->getUserParticipans($this->session->userdata('user_id'));
-        $participans_id         = isset($data['participants']->id) ? $data['participants']->id : null;
-        $data['p_essay']        = $this->M_user->getUserParticipansEssay($this->session->userdata('user_id'), $participans_id);
+        $participant_id         = isset($data['participants']->id) ? $data['participants']->id : null;
+        $data['p_essay']        = $this->M_user->getUserParticipansEssay($this->session->userdata('user_id'), $participant_id);
         $data['m_essay']        = $this->M_master->getParticipansEssay();
         $data['countries']      = $this->M_user->getAllCountries();
 
@@ -284,8 +284,8 @@ class User extends CI_Controller
 
         $data = [
             'status'        => $this->midtranspayments->cvtStatusToInt($data->transaction_status),
-            'modified_at'   => time(),
-            'modified_by'   => $this->session->userdata('user_id')
+            'updated_at'   => time(),
+            // 'modified_by'   => $this->session->userdata('user_id')
         ];
 
         $where = [

@@ -55,7 +55,7 @@ class M_master extends CI_Model
             'title' => $title,
             'order' => $this->db->get_where('m_programs_faq_categories', ['deleted_at' => null])->num_rows(),
             'created_at' => time(),
-            'created_by' => $this->session->userdata('user_id')
+            // 'created_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->insert('m_programs_faq_categories', $data);
@@ -69,8 +69,8 @@ class M_master extends CI_Model
 
         $data = [
             'title' => $title,
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -99,7 +99,7 @@ class M_master extends CI_Model
             'content' => $answer,
             'order' => $this->db->get_where('m_programs_faq', ['m_programs_faq_categories_id' => $m_programs_faq_categories_id, 'deleted_at' => null])->num_rows(),
             'created_at' => time(),
-            'created_by' => $this->session->userdata('user_id')
+            // 'created_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->insert('m_programs_faq', $data);
@@ -115,8 +115,8 @@ class M_master extends CI_Model
         $data = [
             'faq' => $faq,
             'content' => $answer,
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -175,7 +175,7 @@ class M_master extends CI_Model
             'start_date' => strtotime($start_date),
             'end_date' => strtotime($end_date),
             'created_at' => time(),
-            'created_by' => $this->session->userdata('user_id')
+            // 'created_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->insert('m_payments_batch', $data);
@@ -201,8 +201,8 @@ class M_master extends CI_Model
             'amount_usd' => $amount_usd,
             'start_date' => strtotime($start_date),
             'end_date' => strtotime($end_date),
-            'modified_at' => time(),
-            'modified_by' => $this->session->userdata('user_id')
+            'updated_at' => time(),
+            // 'modified_by' => $this->session->userdata('user_id')
         ];
 
         $this->db->where('id', $id);
@@ -250,7 +250,7 @@ class M_master extends CI_Model
 
     function getParticipansEssay(){
         $this->db->select('a.*')
-        ->from('m_essay a')
+        ->from('m_programs_essay a')
         ->where(['a.deleted_at' => null])
         ;
 
@@ -287,7 +287,7 @@ class M_master extends CI_Model
         $referral_code      = $this->input->post('referral_code');
         $email              = $this->input->post('email');
         $address            = $this->input->post('address');
-        $whatsapp_number    = $this->input->post('whatsapp_number');
+        $whatsapp    = $this->input->post('whatsapp');
         $nationality        = $this->input->post('nationality');
         $instagram          = $this->input->post('instagram');
         $tiktok             = $this->input->post('tiktok');
@@ -299,13 +299,13 @@ class M_master extends CI_Model
             'referral_code' => $referral_code,
             'email' => $email,
             'address' => $address,
-            'whatsapp_number' => $whatsapp_number,
+            'whatsapp' => $whatsapp,
             'nationality' => $nationality,
             'instagram' => $instagram,
             'tiktok' => $tiktok,
             'institution' => $institution,
             'occupation' => $occupation,
-            'created_by' => $this->session->userdata('user_id'),
+            // 'created_by' => $this->session->userdata('user_id'),
             'created_at' => time()
         ];
 
@@ -320,7 +320,7 @@ class M_master extends CI_Model
         $referral_code      = $this->input->post('referral_code');
         $email              = $this->input->post('email');
         $address            = $this->input->post('address');
-        $whatsapp_number    = $this->input->post('whatsapp_number');
+        $whatsapp    = $this->input->post('whatsapp');
         $nationality        = $this->input->post('nationality');
         $instagram          = $this->input->post('instagram');
         $tiktok             = $this->input->post('tiktok');
@@ -333,14 +333,14 @@ class M_master extends CI_Model
                 'referral_code' => $referral_code,
                 'email' => $email,
                 'address' => $address,
-                'whatsapp_number' => $whatsapp_number,
+                'whatsapp' => $whatsapp,
                 'nationality' => $nationality,
                 'instagram' => $instagram,
                 'tiktok' => $tiktok,
                 'institution' => $institution,
                 'occupation' => $occupation,
-                'modified_by' => $this->session->userdata('user_id'),
-                'modified_at' => time()
+                // 'modified_by' => $this->session->userdata('user_id'),
+                'updated_at' => time()
             ];
         }else{
             $data = [
@@ -348,14 +348,14 @@ class M_master extends CI_Model
                 'referral_code' => $referral_code,
                 'email' => $email,
                 'address' => $address,
-                'whatsapp_number' => $whatsapp_number,
+                'whatsapp' => $whatsapp,
                 'nationality' => $nationality,
                 'instagram' => $instagram,
                 'tiktok' => $tiktok,
                 'institution' => $institution,
                 'occupation' => $occupation,
-                'modified_by' => $this->session->userdata('user_id'),
-                'modified_at' => time()
+                // 'modified_by' => $this->session->userdata('user_id'),
+                'updated_at' => time()
             ];
         }
 
@@ -389,7 +389,7 @@ class M_master extends CI_Model
             'continent' => $continent,
             'type_visa' => $type_visa,
             'issued_from' => $issued_from,
-            'created_by' => $this->session->userdata('user_id'),
+            // 'created_by' => $this->session->userdata('user_id'),
             'created_at' => time()
         ];
 
@@ -410,8 +410,8 @@ class M_master extends CI_Model
             'continent' => $continent,
             'type_visa' => $type_visa,
             'issued_from' => $issued_from,
-            'modified_by' => $this->session->userdata('user_id'),
-            'modified_at' => time()
+            // 'modified_by' => $this->session->userdata('user_id'),
+            'updated_at' => time()
         ];
 
 
