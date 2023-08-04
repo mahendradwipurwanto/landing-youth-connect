@@ -1,9 +1,9 @@
 <!-- Hero -->
 <div class="position-relative bg-img-start"
-	style="background-image: url(<?= base_url();?>berkas/landing/hero/hero1.jpg);">
+	style="background-image: url(<?= base_url();?>berkas/landing/hero/hero1.png);">
 	<div class="container content-space-t-2 content-space-t-md-3 content-space-3 content-space-b-lg-5">
 		<div class="w-lg-50 mt-5">
-			<h1>Eligilibity Countries for MEYS Summit</h1>
+			<h1 class="text-white">Eligilibity Countries for IYS Summit</h1>
 		</div>
 	</div>
 
@@ -77,7 +77,7 @@
 	<!-- Heading -->
 	<div class="w-md-75 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
 		<span class="text-cap">Eligilibity Countries</span>
-		<h2>Find information about Eligilibity Countries for MEYS Summit</h2>
+		<h2>Find information about Eligilibity Countries for IYS Summit</h2>
 	</div>
 	<!-- End Heading -->
 

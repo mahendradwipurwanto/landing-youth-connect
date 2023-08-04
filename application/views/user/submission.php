@@ -641,6 +641,7 @@
 											<?= isset($participants->name) ? 'value="'.$participants->name.'"' : '';?>>
 										<span class="invalid-feedback">Please enter a valid full name.</span>
 									</div>
+									<small class="text-secondary">Maximum 25 characters (including spaces). Please ensure your name is complete and accurate as it will be used for certificate and ID card purposes.</small>
 								</div>
 								<!-- End Form Group -->
 
@@ -1257,16 +1258,16 @@
 													Instagram & TikTok
 													<ul>
 														<li><b>Instagram YBB: </b><a href="https://www.instagram.com/youthbreaktheboundaries" target="_blank" rel="noopener noreferrer">https://www.instagram.com/youthbreaktheboundaries</a></li>
-														<li><b>Instagram MEYS: </b><a href="https://www.instagram.com/meysummit" target="_blank" rel="noopener noreferrer">https://www.instagram.com/meysummit</a></li>
+														<li><b>Instagram IYS: </b><a href="https://www.instagram.com/meysummit" target="_blank" rel="noopener noreferrer">https://www.instagram.com/meysummit</a></li>
 														<li><b>Tiktok YBB: </b><a href="https://www.tiktok.com/@youthbreaktheboundaries" target="_blank" rel="noopener noreferrer">https://www.tiktok.com/@youthbreaktheboundaries</a></li>
-														<li><b>Tiktok MEYS: </b><a href="https://www.tiktok.com/@middleeastyouthsummit" target="_blank" rel="noopener noreferrer">https://www.tiktok.com/@middleeastyouthsummit</a></li>
+														<li><b>Tiktok IYS: </b><a href="https://www.tiktok.com/@middleeastyouthsummit" target="_blank" rel="noopener noreferrer">https://www.tiktok.com/@middleeastyouthsummit</a></li>
 													</ul>
 												</li>
 												<li>Join Istanbull Youth Summit and Youth Break the Boundaries
 													Telegram channel
 													<ul>
 														<li><b>Telegram YBB: </b><a href="http://t.me/youthbreaktheboundaries" target="_blank" rel="noopener noreferrer">http://t.me/youthbreaktheboundaries</a></li>
-														<li><b>Telegram MEYS: </b><a href="https://www.tiktok.com/@middleeastyouthsummit" target="_blank" rel="noopener noreferrer">https://www.tiktok.com/@middleeastyouthsummit</a></li>
+														<li><b>Telegram IYS: </b><a href="https://www.tiktok.com/@middleeastyouthsummit" target="_blank" rel="noopener noreferrer">https://www.tiktok.com/@middleeastyouthsummit</a></li>
 													</ul>
 												</li>
 												<li>Subscribe YouTube channel YBB</li>
@@ -1400,7 +1401,7 @@
 									<div class="alert alert-soft-info small">
 										You need to make payment first, before submitted your documents for Middle
 										East
-										Youth Summit Program. You can go to payments menu on your MEYS account or <a
+										Youth Summit Program. You can go to payments menu on your IYS account or <a
 											href="<?= site_url('user/payments');?>" class="text-primary">click
 											here</a>
 									</div>
@@ -1469,7 +1470,7 @@
 						<div class="mb-3">
 							<h2>Successful!</h2>
 							<p>Your submisson has been successfully submitted. You can still edit your submission on
-								"Submission Menu" on your MEYS Account.</p>
+								"Submission Menu" on your IYS Account.</p>
 						</div>
 
 						<div class="d-flex justify-content-center">

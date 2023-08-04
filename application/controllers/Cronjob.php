@@ -57,7 +57,7 @@ class Cronjob extends CI_Controller
         $webhook = "https://discord.com/api/webhooks/1082140370009325659/1OwsXjS4Yz6MukJPgiY30K37XBf-cJ_WpruzP4rD4FZUv5wvWrNwG--Avfjqs13E0a0D";
         $timestamp = date("c", strtotime("now"));
         $msg = json_encode([
-            "username" => "MEYS ".date("Y"),
+            "username" => "IYS ".date("Y"),
 
             "tts" => false,
 
@@ -139,7 +139,7 @@ class Cronjob extends CI_Controller
         file_put_contents("{$path}{$backup_name}", $backup);
 
         $msg = json_encode([
-            "username" => "MEYS ".date("Y")." - Backup DB",
+            "username" => "IYS ".date("Y")." - Backup DB",
 
             "tts" => false,
 
@@ -214,7 +214,7 @@ class Cronjob extends CI_Controller
         $timestamp = date("c", strtotime("now"));
 
         $msg = json_encode([
-            "username" => "MEYS ".date("Y")." - Update payments",
+            "username" => "IYS ".date("Y")." - Update payments",
 
             "tts" => false,
 
@@ -251,7 +251,7 @@ class Cronjob extends CI_Controller
         ->from('tb_payments a')
         ->join('access_user b', 'a.user_id = b.user_id')
         ->join('access_auth c', 'a.user_id = c.user_id')
-        ->join('m_payments_settings d', 'a.payment_setting = d.id')
+        ->join('m_payments_method d', 'a.payment_setting = d.id')
         ->where(['a.deleted_at' => null, 'a.status' => 1, 'd.type_method' => 'gateway_midtrans']);
 
         $query = $this->db->get()->result();
@@ -290,7 +290,7 @@ class Cronjob extends CI_Controller
         $timestamp = date("c", strtotime("now"));
 
         $msg = json_encode([
-            "username" => "MEYS ".date("Y")." - Update midtrans pending payments",
+            "username" => "IYS ".date("Y")." - Update midtrans pending payments",
 
             "tts" => false,
 

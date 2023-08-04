@@ -33,7 +33,7 @@ class TemplateFront
         $data['web_alamat'] = $web_data->address;
         $data['web_telepon'] = $web_data->phone;
         $data['web_email'] = $web_data->email;
-        $data['web_guidelines'] = '';
+        $data['web_guidelines'] = $web_data->guidelines;
         $data['submission_deadline'] = '';
 
         $data['sosmed_ig'] = $web_data->instagram;

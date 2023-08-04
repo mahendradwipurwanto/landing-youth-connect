@@ -11,8 +11,11 @@ class ApiRequests
     public function __construct()
     {
         $this->client = new Client();
-        // $this->host = 'http://localhost:8000/api/v1/';
-        $this->host = 'https://api.ybbfoundation.com/api/v1/';
+        if ($_SERVER['HTTP_HOST'] === 'localhost') {
+            $this->host = 'http://localhost:8000/api/v1/';
+        } else {
+            $this->host = 'https://api.ybbfoundation.com/api/v1/';
+        }
     }
 
     public function post($url, $data = [], $headers = [])

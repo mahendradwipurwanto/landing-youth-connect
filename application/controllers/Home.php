@@ -8,7 +8,7 @@ class Home extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(['M_home', 'M_master']);
+        $this->load->model(['m_home', 'M_master']);
     }
 
     public function index()
@@ -19,8 +19,8 @@ class Home extends CI_Controller
         $data['btn_sign_up']    = "btn-light";
         $data['btn_sign_in']    = "btn-outline-light";
 
-        $data['swiper'] = $this->M_home->getHomeSwiper();
-        $data['home']['hero'] = $this->M_home->getHomeComponents('hero');
+        $data['swiper'] = $this->m_home->getHomeSwiper();
+        $data['home']['hero'] = $this->m_home->getHomeComponents('hero');
 
         $this->templatefront->view('home/home', $data);
     }
@@ -33,7 +33,7 @@ class Home extends CI_Controller
         $data['btn_sign_up']    = "btn-light";
         $data['btn_sign_in']    = "btn-outline-light";
 
-        $data['faq'] = $this->M_home->getFaqAll();
+        $data['faq'] = $this->m_home->getFaqAll();
         // ej($data);
         $this->templatefront->view('home/faq', $data);
     }

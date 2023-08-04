@@ -172,7 +172,6 @@ class Authentication extends CI_Controller
         $url = 'auth/login';
         $headers = [
             'Content-Type' => 'application/json',
-            'Program_id' => 1,
         ];
 
         $data = [
@@ -188,6 +187,12 @@ class Authentication extends CI_Controller
                 // mengambil data user dengan param email
                 $user = $response['data']['user'];
 
+                if ($user['weight'] == 0 || $user['weight'] == 1 || $user['weight'] == 2) {
+                    $this->session->set_flashdata('notif_warning', "You not allowed to sign from this website");
+                    // SESS DESTROY
+                    redirect('sign-in');
+                }
+
                 $this->M_auth->makeOnline($user['id']);
 
                 // setting data session
@@ -196,6 +201,7 @@ class Authentication extends CI_Controller
                     'email' => $user['email'],
                     'name' => $user['name'],
                     'role' => $user['weight'],
+                    'program_id' => $user['program_id'],
                     'token' => $response['data']['access_token'],
                     'logged_in' => true
                 ];
@@ -205,23 +211,18 @@ class Authentication extends CI_Controller
 
                 $this->M_auth->setLogTime($user['id']);
                 // CEK HAK AKSES
-                // SUPER ADMIN
-                if ($user['weight'] == 0 || $user['weight'] == 1 || $user['weight'] == 2) {
-                    if ($this->session->userdata('redirect')) {
-                        $this->session->set_flashdata('notif_success', 'Hi, sign in success. Please continue your activities !');
-                        redirect($this->session->userdata('redirect'));
-                    } else {
-                        $this->session->set_flashdata('notif_success', "Welcome super admin, {$user['name']}");
-                        redirect(site_url('admin/dashboard'));
-                    }
-
-                    // ADMIN
+                if ($user['weight'] == 3) {
+                    $this->session->set_flashdata('notif_success', "Hi {$user['name']}, welcome ambassador");
+                    redirect(site_url('ambassador'));
+                } elseif ($user['weight'] == 4) {
+                    $this->session->set_flashdata('notif_success', "Hi {$user['name']}, welcome partner");
+                    redirect(site_url('partner'));
                 } elseif ($user['weight'] == 5) {
                     // cek status dari user yang lagin - 0: BELUM AKTIF - 1: AKTIF - 2: SUSPEND;
-                    if ($user['active'] == "0") {
+                    if ($user['status'] == 0) {
                         $this->session->set_flashdata('error', "Hi {$user['name']}, please verified your email first");
                         redirect(site_url('verification-email'));
-                    } elseif ($user['active'] == "2") {
+                    } elseif ($user['status'] == 2) {
                         $this->session->set_flashdata('error', "Hi {$user['name']}, your account has been suspended. Please contact admin for more information");
                         redirect(site_url('suspend'));
                     } else {
@@ -295,6 +296,7 @@ class Authentication extends CI_Controller
                             'email' => $user['email'],
                             'name' => $user['name'],
                             'role' => $user['weight'],
+                            'program_id' => $user['program_id'],
                             'token' => $response['data']['access_token'],
                             'logged_in' => true
                         ];

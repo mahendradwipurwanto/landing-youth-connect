@@ -82,7 +82,7 @@ div.dataTables_wrapper {
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-	background: #377dff;
+	background: #25476C;
 	opacity: 0.5;
 	cursor: pointer;
 }
@@ -91,7 +91,7 @@ div.dataTables_wrapper {
 /* Handle on hover */
 
 ::-webkit-scrollbar-thumb:hover {
-	background: #377dff;
+	background: #25476C;
 	opacity: 0.9;
 	cursor: pointer !important;
 }
@@ -619,7 +619,7 @@ div.dataTables_wrapper {
 } */
 .select2-container--default .select2-selection--single {
 	min-height: calc(1.5em + 1.125rem) !important;
-	border: 0.0625rem solid rgba(33,50,91, .1) !important;
+	border: 0.0625rem solid rgba(37,71,108, .1) !important;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {

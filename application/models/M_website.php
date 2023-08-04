@@ -4,6 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_website extends CI_Model
 {
+    protected $_program_id = 1;
+    
     public function __construct()
     {
         parent::__construct();

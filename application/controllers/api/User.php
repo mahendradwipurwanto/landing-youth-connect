@@ -184,7 +184,7 @@ class User extends CI_Controller
                 $pdf = new Fpdi();
                 $pdf->AddPage();
                 // set the source file
-                $pdf->setSourceFile('berkas/docs/Fixed LoA MEYS 2023.pdf');
+                $pdf->setSourceFile('berkas/docs/Fixed LoA IYS 2023.pdf');
                 // import page 1
                 $tplIdx = $pdf->importPage(1);
                 $pdf->useTemplate($tplIdx, 0, 0, 220);
@@ -238,7 +238,7 @@ class User extends CI_Controller
                 $pdf = new Fpdi();
                 $pdf->AddPage();
                 // set the source file
-                $pdf->setSourceFile('berkas/docs/AGREEMENT LETTER MEYS 2023.docx.pdf');
+                $pdf->setSourceFile('berkas/docs/AGREEMENT LETTER IYS 2023.docx.pdf');
                 // import page 1
                 $tplIdx = $pdf->importPage(1);
                 $pdf->useTemplate($tplIdx, 0, 0, 220);

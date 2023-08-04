@@ -8,7 +8,7 @@ class Master extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(['M_master', 'M_announcements', 'M_home', 'M_user']);
+        $this->load->model(['M_master', 'M_announcements', 'm_home', 'M_user']);
 
         if ($this->session->userdata('role') > 2) {
             $this->session->set_flashdata('warning', "You don`t have access to this page");
@@ -20,7 +20,7 @@ class Master extends CI_Controller
     {
         $data['countries']      = $this->M_user->getAllCountries();
         $data['ambassador'] = $this->M_master->getAllAmbassador();
-        $data['faq'] = $this->M_home->getFaqAll();
+        $data['faq'] = $this->m_home->getFaqAll();
 
         $this->templateback->view('admin/master/ambassador', $data);
     }
@@ -35,7 +35,7 @@ class Master extends CI_Controller
     public function faq()
     {
         $data['master_faq'] = $this->M_master->get_masterFaqContent();
-        $data['faq'] = $this->M_home->getFaqAll();
+        $data['faq'] = $this->m_home->getFaqAll();
 
         $this->templateback->view('admin/master/faq', $data);
     }

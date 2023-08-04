@@ -5,7 +5,7 @@
 </mask>
 <g mask="url(#mask0)">
 <rect x="113.356" y="-59.9774" width="350" height="1029.49" transform="rotate(-35.2054 113.356 -59.9774)" fill="#3FCEEE"/>
-<rect x="169.808" y="654.759" width="350" height="1207" transform="rotate(-125.205 169.808 654.759)" fill="#377dff"/>
-<rect x="468.87" y="443.752" width="350" height="350" transform="rotate(-125.205 468.87 443.752)" fill="#377DFF"/>
+<rect x="169.808" y="654.759" width="350" height="1207" transform="rotate(-125.205 169.808 654.759)" fill="#25476C"/>
+<rect x="468.87" y="443.752" width="350" height="350" transform="rotate(-125.205 468.87 443.752)" fill="#25476C"/>
 </g>
 </svg>

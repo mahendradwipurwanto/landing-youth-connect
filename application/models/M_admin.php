@@ -4,6 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_admin extends CI_Model
 {
+    protected $_program_id = 1;
+    
     public function __construct()
     {
         parent::__construct();
@@ -443,7 +445,7 @@ class M_admin extends CI_Model
         $this->db->select('a.*, b.summit, c.payment_method, c.img_method')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id')
+        ->join('m_payments_method c', 'a.payment_setting = c.id')
         ->where(['a.user_id' => $user_id, 'a.status !=' => 3, 'b.active' => 1, 'a.deleted_at' => null])
         ;
 
@@ -564,7 +566,7 @@ class M_admin extends CI_Model
         $this->db->select('a.*, b.summit, c.payment_method, c.img_method, c.type_method, c.code_method, d.email, e.name, e.phone, f.whatsapp')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id', 'left')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id', 'left')
+        ->join('m_payments_method c', 'a.payment_setting = c.id', 'left')
         ->join('access_auth d', 'a.user_id = d.user_id', 'left')
         ->join('access_user e', 'a.user_id = e.user_id', 'left')
         ->join('tb_participants f', 'a.user_id = f.user_id', 'left')
@@ -591,14 +593,14 @@ class M_admin extends CI_Model
     }
 
     function checkedParticipantDocumentsLoa(){
-        $this->db->where(['user_id' => $this->input->post('id'), 'm_document_id' => 4]);
-        $this->db->update('tb_participants_documents', ['status' => 2]);
+        $this->db->where(['participant_id' => $this->input->post('id'), 'm_document_id' => 4]);
+        $this->db->update('tb_participants_document', ['status' => 2]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
     function rejectedParticipantDocumentsLoa(){
-        $this->db->where(['user_id' => $this->input->post('id'), 'm_document_id' => 4]);
-        $this->db->update('tb_participants_documents', ['status' => 3]);
+        $this->db->where(['participant_id' => $this->input->post('id'), 'm_document_id' => 4]);
+        $this->db->update('tb_participants_document', ['status' => 3]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 

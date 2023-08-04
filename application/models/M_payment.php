@@ -4,6 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_payment extends CI_Model
 {
+    protected $_program_id = 1;
+    
     public function __construct()
     {
         parent::__construct();
@@ -22,12 +24,12 @@ class M_payment extends CI_Model
 
     public function getPaymentSettings()
     {
-        return $this->db->get_where('m_payments_settings', ['deleted_at' => null, 'type_method' => 'manual'])->result();
+        return $this->db->get_where('m_payments_method', ['deleted_at' => null, 'type_method' => 'manual'])->result();
     }
 
     public function getPaymentSettingsUser()
     {
-        $models = $this->db->get_where('m_payments_settings', ['active' => 1, 'deleted_at' => null, 'type_method' => 'manual'])->result();
+        $models = $this->db->get_where('m_payments_method', ['active' => 1, 'deleted_at' => null, 'type_method' => 'manual'])->result();
 
         foreach ($models as $key => $val) {
             $models[$key]->data = json_decode($val->data);
@@ -38,7 +40,7 @@ class M_payment extends CI_Model
 
     public function getDetailPaymentSetting($id = null)
     {
-        return $this->db->get_where('m_payments_settings', ['deleted_at' => null, 'id' => $id])->row();
+        return $this->db->get_where('m_payments_method', ['deleted_at' => null, 'id' => $id])->row();
     }
 
     public function getUserPaymentBatch()
@@ -123,7 +125,7 @@ class M_payment extends CI_Model
         $this->db->select('a.*, b.summit, b.is_registration, c.payment_method, c.img_method, c.type_method, c.code_method')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id')
+        ->join('m_payments_method c', 'a.payment_setting = c.id')
         ->where(['a.user_id' => $this->session->userdata('user_id'), 'a.status !=' => 3, 'a.payment_batch' => $batch_id, 'a.deleted_at' => null])
         ;
 
@@ -147,7 +149,7 @@ class M_payment extends CI_Model
         $this->db->select('a.*, b.summit, b.is_registration, c.payment_method, c.img_method, c.type_method, c.code_method')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id')
+        ->join('m_payments_method c', 'a.payment_setting = c.id')
         ->where(['a.user_id' => $this->session->userdata('user_id'), 'a.status' => 2, 'a.payment_batch' => $batch_id, 'a.deleted_at' => null])
         ;
 
@@ -171,7 +173,7 @@ class M_payment extends CI_Model
         $this->db->select('a.*, b.summit, b.is_registration, c.payment_method, c.img_method, c.data')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id')
+        ->join('m_payments_method c', 'a.payment_setting = c.id')
         ->where(['a.id' => $payment_id, 'a.deleted_at' => null])
         ;
 
@@ -187,7 +189,7 @@ class M_payment extends CI_Model
         $this->db->select('a.*, b.summit, b.is_registration, c.payment_method, c.img_method, c.type_method, c.code_method, d.name')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id')
+        ->join('m_payments_method c', 'a.payment_setting = c.id')
         ->join('access_user d', 'a.user_id = d.user_id')
         ->where(['a.order_id' => $order_id, 'a.deleted_at' => null])
         ;
@@ -210,7 +212,7 @@ class M_payment extends CI_Model
         $this->db->select('a.*, b.summit, b.file, c.payment_method, c.img_method, c.type_method, c.code_method, d.name')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id')
+        ->join('m_payments_method c', 'a.payment_setting = c.id')
         ->join('access_user d', 'a.user_id = d.user_id')
         ->where(['a.user_id' => $user_id, 'a.payment_batch >' => 0, 'a.payment_setting >' => 0, 'a.deleted_at' => null])
         ;
@@ -229,7 +231,7 @@ class M_payment extends CI_Model
         $this->db->select('a.*, b.summit, c.payment_method, c.img_method, c.type_method, c.code_method, d.name')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id')
+        ->join('m_payments_method c', 'a.payment_setting = c.id')
         ->join('access_user d', 'a.user_id = d.user_id')
         ->where(['a.user_id' => $user_id, 'a.deleted_at' => null])
         ;
@@ -259,7 +261,7 @@ class M_payment extends CI_Model
         ];
 
         $this->db->where('id', $id);
-        $this->db->update('m_payments_settings', $data);
+        $this->db->update('m_payments_method', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -358,7 +360,7 @@ class M_payment extends CI_Model
         $this->db->select('a.*, b.summit, c.payment_method, c.img_method, c.type_method, c.code_method, d.email, e.name, e.phone')
         ->from('tb_payments a')
         ->join('m_payments_batch b', 'a.payment_batch = b.id', 'inner')
-        ->join('m_payments_settings c', 'a.payment_setting = c.id', 'inner')
+        ->join('m_payments_method c', 'a.payment_setting = c.id', 'inner')
         ->join('access_auth d', 'a.user_id = d.user_id', 'inner')
         ->join('access_user e', 'a.user_id = e.user_id', 'inner')
         ->where(['a.deleted_at' => null])

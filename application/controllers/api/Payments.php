@@ -79,7 +79,7 @@ class Payments extends CI_Controller
             }
 
             $msg = json_encode([
-                "username" => "MEYS ".date("Y")." - Webhook Payments",
+                "username" => "IYS ".date("Y")." - Webhook Payments",
 
                 "tts" => false,
 
@@ -107,7 +107,7 @@ class Payments extends CI_Controller
             discordmsg($msg, $webhook);
         } else {
             $msg = json_encode([
-                "username" => "MEYS ".date("Y")." - Webhook Payments",
+                "username" => "IYS ".date("Y")." - Webhook Payments",
 
                 "tts" => false,
 

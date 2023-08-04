@@ -122,7 +122,7 @@
   						<!-- Beranda -->
   						<li class="nav-item">
   							<a class="nav-link <?= $this->uri->segment(1) == 'about' ? 'active' : '';?>"
-  								href="<?= site_url('about');?>">About MEYS</a>
+  								href="<?= site_url('about');?>">About IYS</a>
   						</li>
   						<!-- End Beranda -->
 

@@ -31,7 +31,7 @@
 								<linearGradient id="paint2_linear" x1="323.205" y1="785.242" x2="-97.6164" y2="56.3589"
 									gradientUnits="userSpaceOnUse">
 									<stop offset="0" stop-color="white" stop-opacity="0" />
-									<stop offset="1" stop-color="#377dff" />
+									<stop offset="1" stop-color="#25476C" />
 								</linearGradient>
 							</defs>
 						</svg>
@@ -43,10 +43,10 @@
 			<!-- End CTA -->
 			<?php else:?>
 			<?php if (isset($participants->is_payment) && $participants->is_payment == 0):?>
-			<div class="alert alert-soft-danger small" role="alert">
+			<!-- <div class="alert alert-soft-danger small" role="alert">
 				You not yet make payment for your submission to be submitted. Please make payment at "Payment" menu or
 				<a href="<?= site_url('user/payment');?>" class="text-primary fw-bold">click here</a>
-			</div>
+			</div> -->
 			<?php endif;?>
 			<?php if (isset($participants->status) && $participants->is_payment == 1 && ($participants->status == 0 || $participants->status == 1)):?>
 			<div class="alert alert-soft-info small" role="alert">
@@ -60,7 +60,7 @@
 			<?php endif;?>
 			<?php if (isset($participants->status) && $participants->status == 3):?>
 			<div class="alert alert-soft-success small" role="alert">
-				Your submission has been <b>ACCEPTED !</b>, welcome to MEYS program. Please wait for furthure notice
+				Your submission has been <b>ACCEPTED !</b>, welcome to IYS program. Please wait for furthure notice
 			</div>
 			<?php endif;?>
 			<?php if (isset($participants->status) && $participants->status == 4):?>

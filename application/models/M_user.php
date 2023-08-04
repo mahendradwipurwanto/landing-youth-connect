@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_user extends CI_Model
 {
+    protected $_program_id = 1;
+    
     public function __construct()
     {
         parent::__construct();
@@ -334,10 +336,10 @@ class M_user extends CI_Model
 
     function uploadDocuments($file = null)
     {
-        $documents = $this->db->get_where('tb_participants_documents', ['user_id' => $this->session->userdata('user_id'), 'm_document_id' => $this->input->post('m_document_id')])->row();
+        $documents = $this->db->get_where('tb_participants_document', ['participant_id' => $this->input->post('participant_id'), 'm_document_id' => $this->input->post('m_document_id')])->row();
 
         $data = [
-            'user_id'           => $this->session->userdata('user_id'),
+            'participant_id'           => $this->input->post('participant_id'),
             'm_document_id'     => $this->input->post('m_document_id'),
             'file'              => $file,
         ];
@@ -347,7 +349,7 @@ class M_user extends CI_Model
                 // 'created_by'        => $this->session->userdata('user_id'),
             ];
 
-            $this->db->insert('tb_participants_documents', array_merge($data, $log));
+            $this->db->insert('tb_participants_document', array_merge($data, $log));
 
             return ($this->db->affected_rows() != 1) ? false : true;
         } else {
@@ -358,7 +360,7 @@ class M_user extends CI_Model
             ];
 
             $this->db->where('id', $documents->id);
-            $this->db->update('tb_participants_documents', array_merge($data, $log));
+            $this->db->update('tb_participants_document', array_merge($data, $log));
 
             return ($this->db->affected_rows() != 1) ? false : true;
         }
@@ -374,7 +376,7 @@ class M_user extends CI_Model
 
         foreach ($models as $key => $val) {
 
-            $documents = $this->db->get_where('tb_participants_documents', ['user_id' => $this->session->userdata('user_id'), 'm_document_id' => $val->id])->row();
+            $documents = $this->db->get_where('tb_participants_document', ['participant_id' => $this->input->post('participant_id'), 'm_document_id' => $val->id])->row();
 
             if (!empty($documents)) {
                 $val->status    = (int) $documents->status;

@@ -23,7 +23,7 @@
     			<div class="flex-grow-1 mx-auto" style="max-width: 28rem;">
     				<!-- Heading -->
     				<div class="text-center mb-5 mb-md-7">
-    					<h1 class="h2">Welcome to MEYS</h1>
+    					<h1 class="h2">Welcome to IYS</h1>
     					<p>Fill out the form to get started.</p>
     				</div>
     				<!-- End Heading -->

@@ -47,7 +47,7 @@ class Excel
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => array('argb' => 'ff377dff')
+                'startColor' => array('argb' => 'ff25476C')
             ]
         ];
         // Buat sebuah variabel untuk menampung pengaturan style dari isi tabel
@@ -64,7 +64,7 @@ class Excel
         ];
 
         // set header title
-        $sheet->setCellValue('A1', "MEYS PARTICIPANTS DATA ".date('Y')." - {$status}"); // Set kolom A1
+        $sheet->setCellValue('A1', "IYS PARTICIPANTS DATA ".date('Y')." - {$status}"); // Set kolom A1
         $sheet->mergeCells('A1:D1'); // Set Merge Cell pada kolom A1 sampai E1
         $sheet->getStyle('A1:D1')->applyFromArray($style_title);
         
@@ -165,7 +165,7 @@ class Excel
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => array('argb' => 'ff377dff')
+                'startColor' => array('argb' => 'ff25476C')
             ]
         ];
         // Buat sebuah variabel untuk menampung pengaturan style dari isi tabel
@@ -182,7 +182,7 @@ class Excel
         ];
 
         // set header title
-        $sheet->setCellValue('A1', "MEYS PAYMENTS DATA ".date('Y')." - {$status}"); // Set kolom A1
+        $sheet->setCellValue('A1', "IYS PAYMENTS DATA ".date('Y')." - {$status}"); // Set kolom A1
         $sheet->mergeCells('A1:D1'); // Set Merge Cell pada kolom A1 sampai E1
         $sheet->getStyle('A1:D1')->applyFromArray($style_title);
         

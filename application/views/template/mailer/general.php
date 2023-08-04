@@ -54,7 +54,7 @@
 		}
 
 		a {
-			color: #377dff;
+			color: #25476C;
 			text-decoration: none;
 			font-family: Inter, sans-serif;
 		}
@@ -145,7 +145,7 @@
 
 		.text-primary {
 			opacity: 1;
-			color: #377dff !important;
+			color: #25476C !important;
 		}
 
 		.text-highlight-warning {
@@ -496,14 +496,14 @@
 		}
 
 		.btn-soft-primary {
-			color: #377dff;
+			color: #25476C;
 			background-color: rgba(55, 125, 255, 0.1);
 			border-color: transparent;
 		}
 
 		.btn-soft-primary:hover {
 			color: #fff;
-			background-color: #377dff;
+			background-color: #25476C;
 		}
 
 	</style>

@@ -29,7 +29,7 @@
 							<?php endif;?>
 							<div class="d-grid">
 								<?php if($val->is_source):?>
-								<a href="<?= $val->is_source_local ? site_url($val->source) : $val->source;?>"
+								<a href="<?= $val->source;?>"
 									class="<?= $val->btn_style;?> mb-2"><?= $val->btn_text;?></a>
 								<?php endif;?>
 								<?php if($val->is_second_source):?>

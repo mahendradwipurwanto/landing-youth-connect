@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_master extends CI_Model
 {
+    protected $_program_id = 1;
+    
     public function __construct()
     {
         parent::__construct();
@@ -374,7 +376,7 @@ class M_master extends CI_Model
     }
 
     function get_masterEligilibity(){
-        return $this->db->get_where('m_eligibility_countries', ['deleted_at' => null])->result();
+        return $this->db->get_where('m_eligilibity_countries', ['deleted_at' => null])->result();
     }
 
     public function addEligilibity()
@@ -393,7 +395,7 @@ class M_master extends CI_Model
             'created_at' => time()
         ];
 
-        $this->db->insert('m_eligibility_countries', $data);
+        $this->db->insert('m_eligilibity_countries', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -416,7 +418,7 @@ class M_master extends CI_Model
 
 
         $this->db->where('id', $id);
-        $this->db->update('m_eligibility_countries', $data);
+        $this->db->update('m_eligilibity_countries', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -425,7 +427,7 @@ class M_master extends CI_Model
         $id = $this->input->post('id');
 
         $this->db->where('id', $id);
-        $this->db->update('m_eligibility_countries', ['is_deleted' => 1]);
+        $this->db->update('m_eligilibity_countries', ['is_deleted' => 1]);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 }
